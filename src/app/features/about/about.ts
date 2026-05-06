@@ -114,37 +114,6 @@ import { AuthService } from '../../core/services/auth.service';
          </div>
       </section>
 
-      <!-- 👥 Team Grid -->
-      <section class="py-40 px-6">
-         <div class="max-w-7xl mx-auto space-y-24">
-            <div class="flex flex-col md:flex-row justify-between items-end gap-10">
-               <div class="space-y-6">
-                  <h2 class="text-4xl md:text-6xl font-black text-text-title tracking-tighter uppercase italic leading-none animate-fade-up">Mentes <span class="text-primary-500">Brillantes</span>.</h2>
-                  <p class="text-text-muted font-medium max-w-lg animate-fade-up">Conoce al equipo que lidera la revolución educativa en Nitex.</p>
-               </div>
-               <div class="flex gap-4 animate-fade">
-                  <button class="w-16 h-16 bg-white border border-slate-100 text-slate-400 rounded-2xl flex items-center justify-center hover:bg-primary-500 hover:text-white transition-all duration-500"><mat-icon>west</mat-icon></button>
-                  <button class="w-16 h-16 bg-text-title text-white rounded-2xl flex items-center justify-center hover:bg-primary-500 transition-all duration-500 shadow-xl shadow-primary-500/20"><mat-icon>east</mat-icon></button>
-               </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-               @for (member of team; track member.name) {
-                  <div class="group relative overflow-hidden rounded-[48px] bg-white p-4 hover:shadow-2xl transition-all duration-700">
-                     <div class="aspect-[4/5] w-full overflow-hidden rounded-[36px] bg-bg-main relative">
-                        <img [src]="member.image" [alt]="member.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]">
-                        <div class="absolute inset-0 bg-primary-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                     </div>
-                     <div class="pt-8 pb-4 px-4">
-                        <p class="text-[9px] font-black text-primary-500 uppercase tracking-widest mb-2">{{ member.role }}</p>
-                        <h4 class="text-2xl font-black text-text-title italic tracking-tight">{{ member.name }}</h4>
-                     </div>
-                  </div>
-               }
-            </div>
-         </div>
-      </section>
-
       <!-- 🚀 SaaS CTA -->
       @if (!isLoggedIn()) {
         <section class="py-40 px-6">
@@ -177,12 +146,5 @@ export class About {
     { icon: 'diamond', title: 'Excelencia Elite', desc: 'No aceptamos lo mediocre. Cada curso es supervisado para garantizar el máximo nivel técnico y pedagógico.' },
     { icon: 'speed', title: 'Velocidad de Adaptación', desc: 'El mundo cambia cada día. Nuestra currícula se actualiza en tiempo real con las últimas tendencias de la industria.' },
     { icon: 'diversity_3', title: 'Comunidad Radical', desc: 'Fomentamos la colaboración entre estudiantes e instructores, creando una red de networking genuina y potente.' }
-  ];
-
-  team = [
-    { name: 'Marcus Nitex', role: 'Founder & Visionary', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' },
-    { name: 'Elena Vance', role: 'Head of Education', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400' },
-    { name: 'Jared Sun', role: 'UX Director', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400' },
-    { name: 'Sofia Bell', role: 'Lead Strategist', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400' }
   ];
 }

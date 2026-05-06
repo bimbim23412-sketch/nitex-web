@@ -17,8 +17,8 @@ import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Inicio' },
-  { path: 'courses', component: CourseList, title: 'Cursos', canActivate: [authGuard] },
-  { path: 'courses/:id', component: CourseDetail, title: 'Detalle del Curso', canActivate: [authGuard] },
+  { path: 'courses', component: CourseList, title: 'Cursos' },
+  { path: 'courses/:id', component: CourseDetail, title: 'Detalle del Curso' },
   { path: 'learning/:id', component: LearningClassroom, title: 'Aula Virtual', canActivate: [authGuard] },
   { path: 'exam/:id', component: FinalExam, title: 'Examen Final', canActivate: [authGuard] },
   { path: 'about', component: About, title: 'Nosotros' },

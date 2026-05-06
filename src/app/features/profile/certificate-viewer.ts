@@ -118,8 +118,12 @@ export class CertificateViewer implements OnInit {
   user = computed(() => this.auth.currentUser());
   certificate = signal<any>(null);
   qrUrl = computed(() => {
-    const code = this.certificate()?.qrCode || 'NITEX-VERIFY';
-    return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nitex.pro/verify/${code}`;
+    const cert = this.certificate();
+    if (!cert) return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NITEX-VALID';
+    
+    // Codificamos información real para que al escanear salga algo útil
+    const verifyData = `NITEX ACADEMY\nCertificado: ${cert.id}\nAlumno: ${this.user()?.name}\nCurso: ${cert.courseName}\nFecha: ${new Date(cert.date).toLocaleDateString()}`;
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(verifyData)}`;
   });
 
   ngOnInit() {
