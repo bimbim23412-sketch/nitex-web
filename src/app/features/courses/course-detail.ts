@@ -22,7 +22,7 @@ import { Course } from '../../core/models/course.model';
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
           <div class="lg:col-span-7 space-y-8 animate-fade-up">
             <div class="flex items-center gap-6">
-               <span class="px-5 py-2 bg-emerald-500 text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20">Acceso Libre</span>
+               <span class="px-5 py-2 bg-primary-500 text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary-500/20">Acceso Libre</span>
                <div class="flex items-center gap-2 text-primary-600">
                   <mat-icon class="scale-50">verified</mat-icon>
                   <span class="text-[9px] font-black uppercase tracking-widest">{{ course()?.instructor }}</span>
@@ -53,8 +53,8 @@ import { Course } from '../../core/models/course.model';
             </div>
 
             <div class="pt-6 flex flex-col sm:flex-row gap-4">
-               <button (click)="enroll()" [disabled]="isEnrolled()" class="btn-primary py-5 px-12 rounded-[28px] text-base shadow-2xl shadow-primary-500/30">
-                  {{ isEnrolled() ? 'Ya estás inscrito' : 'Inscribirme ahora' }}
+               <button (click)="enroll()" class="btn-primary py-5 px-12 rounded-[28px] text-base shadow-2xl shadow-primary-500/30">
+                  {{ isEnrolled() ? 'Continuar Formación' : 'Acceder' }}
                </button>
                <button routerLink="/courses" class="btn-secondary py-5 px-12 rounded-[28px] text-base">Explorar Otros</button>
             </div>
@@ -167,12 +167,12 @@ export class CourseDetail implements OnInit {
     }
 
     if (this.isEnrolled()) {
-      this.router.navigate(['/classroom', course.id]);
+      this.router.navigate(['/learning', course.id]);
       return;
     }
 
     if (this.courseService.enrollInCourse(course.id)) {
-      this.router.navigate(['/classroom', course.id]);
+      this.router.navigate(['/learning', course.id]);
     }
   }
 

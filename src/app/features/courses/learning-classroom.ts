@@ -54,20 +54,23 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
               <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Hoja de Ruta</p>
               
               <!-- 🎬 Introduction -->
-              <div class="space-y-3">
-                 <button 
-                   (click)="toggleLevel(0)"
-                   class="w-full flex items-center justify-between p-6 rounded-[32px] transition-all bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
-                 >
-                    <div class="flex items-center gap-4">
-                       <mat-icon class="scale-75">waving_hand</mat-icon>
-                       <span class="text-[11px] font-black uppercase tracking-widest">Introducción</span>
-                    </div>
-                 </button>
-              </div>
+              @if (levels()[0]; as intro) {
+                <div class="space-y-3">
+                   <button 
+                     (click)="setCurrentLesson(intro.lessons[0], intro)"
+                     class="w-full flex items-center justify-between p-6 rounded-[32px] transition-all group"
+                     [class]="currentLesson()?.id === intro.lessons[0].id ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/20' : 'bg-slate-50 text-text-title hover:bg-slate-100'"
+                   >
+                      <div class="flex items-center gap-4">
+                         <mat-icon class="scale-75">waving_hand</mat-icon>
+                         <span class="text-[11px] font-black uppercase tracking-widest">Introducción</span>
+                      </div>
+                   </button>
+                </div>
+              }
 
-              <!-- 📂 Levels -->
-              @for (level of levels(); track level.id) {
+              <!-- 📂 Levels (Filtered to exclude intro) -->
+              @for (level of levels().slice(1); track level.id) {
                  <div class="space-y-3">
                     <button 
                       (click)="toggleLevel(level.id)"
@@ -105,21 +108,32 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
                  </div>
               }
 
-              <!-- 🏆 Final Assessment -->
-              <div class="pt-10 space-y-4">
-                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Certificación</p>
-                 <button 
-                   [routerLink]="['/exam', course()?.id]"
-                   [disabled]="progress() < 100"
-                   class="w-full flex items-center justify-between p-8 rounded-[40px] bg-slate-900 text-white shadow-2xl transition-all group disabled:opacity-30"
-                 >
-                    <div class="flex items-center gap-4">
-                       <mat-icon class="text-primary-500 group-hover:rotate-12 transition-transform">military_tech</mat-icon>
-                       <span class="text-xs font-black uppercase tracking-widest">Examen Final</span>
-                    </div>
-                    <mat-icon class="scale-75 text-primary-500 group-hover:translate-x-1 transition-transform">east</mat-icon>
-                 </button>
-              </div>
+               <!-- 🏆 Final Assessment -->
+               <div class="pt-10 space-y-4">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Certificación</p>
+                  <button 
+                    [routerLink]="progress() === 100 ? ['/exam', course()?.id] : null"
+                    [disabled]="progress() < 100"
+                    class="w-full flex items-center justify-between p-8 rounded-[40px] shadow-2xl transition-all group disabled:opacity-30"
+                    [class]="progress() === 100 ? 'bg-primary-500 text-white' : 'bg-slate-900 text-white'"
+                  >
+                     <div class="flex items-center gap-4">
+                        <mat-icon class="transition-transform" [class.animate-pulse]="progress() === 100">
+                           {{ progress() === 100 ? 'lock_open' : 'lock' }}
+                        </mat-icon>
+                        <div class="text-left">
+                           <span class="text-[9px] font-black uppercase tracking-widest block opacity-70">
+                              {{ progress() === 100 ? 'Desbloqueado' : 'Requisito: 100%' }}
+                           </span>
+                           <span class="text-xs font-black uppercase tracking-widest">Examen Final</span>
+                        </div>
+                     </div>
+                     <div class="flex items-center gap-2">
+                        <span class="text-[9px] font-black uppercase tracking-widest">{{ progress() === 100 ? 'DISPONIBLE' : 'BLOQUEADO' }}</span>
+                        <mat-icon class="scale-75 transition-transform group-hover:translate-x-1">east</mat-icon>
+                     </div>
+                  </button>
+               </div>
             </div>
           </aside>
 
@@ -163,7 +177,7 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
                      <button 
                        (click)="toggleComplete()"
                        class="shrink-0 flex items-center gap-4 px-10 py-5 rounded-[28px] transition-all font-black uppercase text-[10px] tracking-widest shadow-xl shadow-primary-500/10"
-                       [class]="isCurrentLessonCompleted() ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-primary-500 text-white hover:bg-primary-600'"
+                       [class]="isCurrentLessonCompleted() ? 'bg-primary-50 text-primary-700 border border-primary-100' : 'bg-primary-500 text-white hover:bg-primary-600'"
                      >
                         <mat-icon class="scale-90">{{ isCurrentLessonCompleted() ? 'verified' : 'check_circle' }}</mat-icon>
                         {{ isCurrentLessonCompleted() ? 'Completado' : 'Marcar como visto' }}
@@ -175,10 +189,9 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
                         <p class="text-xl text-text-muted font-medium italic leading-relaxed mb-10">
                            {{ currentLesson()?.description }}
                         </p>
-                        <div class="p-12 bg-white rounded-[48px] border border-slate-100 shadow-sm space-y-6">
-                           <p class="text-lg font-medium text-text-body leading-relaxed">
-                              {{ currentLesson()?.content }}
-                           </p>
+                        <div class="p-12 bg-white rounded-[48px] border border-slate-100 shadow-sm">
+                           <div class="text-lg font-medium text-text-body leading-relaxed space-y-4" [innerHTML]="currentLesson()?.content">
+                           </div>
                         </div>
                      </div>
                      
@@ -264,6 +277,7 @@ export class LearningClassroom {
         this.currentLevel.set(lvs[0]);
         this.currentLesson.set(lvs[0].lessons[0]);
         this.expandedLevel.set(lvs[0].id);
+        window.scrollTo(0, 0);
       } else {
         this.router.navigate(['/courses']);
       }
@@ -285,6 +299,7 @@ export class LearningClassroom {
   setCurrentLesson(lesson: Lesson, level: LevelStructure) {
     this.currentLesson.set(lesson);
     this.currentLevel.set(level);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   toggleComplete() {

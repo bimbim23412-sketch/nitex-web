@@ -10,6 +10,7 @@ export const authGuard = () => {
     return true;
   }
 
+  alert('Debes iniciar sesión para acceder al contenido');
   router.navigate(['/auth/login']);
   return false;
 };

@@ -85,6 +85,16 @@ import { MatIconModule } from '@angular/material/icon';
                   <mat-icon class="text-rose-500 scale-75">error_outline</mat-icon>
                   <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest leading-tight">{{ errorMsg() }}</p>
                 </div>
+                
+                @if (lockoutRemaining() > 0) {
+                  <div class="flex items-center gap-3 px-4 py-2 bg-rose-100/50 rounded-xl">
+                    <mat-icon class="text-rose-500 scale-50">timer</mat-icon>
+                    <p class="text-[10px] font-black text-rose-700 uppercase tracking-widest">
+                      Vuelve a intentar en: {{ lockoutRemaining() }}s
+                    </p>
+                  </div>
+                }
+
                 @if (showRecovery()) {
                   <button 
                     type="button"
@@ -112,14 +122,6 @@ import { MatIconModule } from '@angular/material/icon';
               }
             </button>
 
-            <!-- 🔑 Acceso Admin Especial -->
-            <button 
-              type="button"
-              (click)="loginAsAdmin()"
-              class="w-full py-4 border-2 border-slate-100 text-slate-400 rounded-2xl text-[9px] font-black uppercase tracking-widest hover:bg-slate-50 hover:text-primary-500 hover:border-primary-100 transition-all"
-            >
-              Iniciar sesión como administrador
-            </button>
           </form>
 
           <div class="mt-8 text-center pt-8 border-t border-slate-200/50">
@@ -145,16 +147,10 @@ export class Login {
   errorMsg = signal('');
   showPassword = signal(false);
   showRecovery = signal(false);
+  lockoutRemaining = signal(0);
+  private timer: any;
 
-  loginAsAdmin() {
-    this.isLoading.set(true);
-    const response = this.auth.login('admin@demo.com', '123456');
-    if (response.success) {
-      setTimeout(() => {
-        this.router.navigate(['/']);
-      }, 500);
-    }
-  }
+
 
   onSubmit() {
     if (this.loginForm.invalid) return;
@@ -168,14 +164,33 @@ export class Login {
     
     if (response.success) {
       setTimeout(() => {
-        this.router.navigate(['/']);
+        const target = this.auth.isAdmin() ? '/admin' : '/';
+        this.router.navigate([target]);
       }, 800);
     } else {
       setTimeout(() => {
         this.errorMsg.set(response.message || 'Error de autenticación');
-        if (response.showRecovery) this.showRecovery.set(true);
+        if (response.showRecovery) {
+          this.showRecovery.set(true);
+          this.startLockoutTimer();
+        }
         this.isLoading.set(false);
       }, 500);
     }
+  }
+
+  private startLockoutTimer() {
+    if (this.timer) clearInterval(this.timer);
+    
+    const update = () => {
+      const remaining = this.auth.getLockoutRemaining();
+      this.lockoutRemaining.set(remaining);
+      if (remaining <= 0) {
+        clearInterval(this.timer);
+      }
+    };
+
+    update();
+    this.timer = setInterval(update, 1000);
   }
 }

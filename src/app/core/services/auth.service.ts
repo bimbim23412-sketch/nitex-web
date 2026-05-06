@@ -72,19 +72,18 @@ export class AuthService {
   login(email: string, password: string): { success: boolean, message?: string, showRecovery?: boolean } {
     const remainingSeconds = this.getLockoutRemaining();
     if (remainingSeconds > 0) {
-      const minutes = Math.ceil(remainingSeconds / 60);
       return { 
         success: false, 
-        message: `Has excedido los intentos. Debes esperar ${minutes} minutos antes de intentar nuevamente.`,
+        message: `Demasiados intentos, intenta más tarde o recupera tu contraseña`,
         showRecovery: true 
       };
     }
 
-    // Demo bypass for admin
-    if (email === 'admin@demo.com' && password === '123456') {
+    // Demo bypass for admin (Hidden access)
+    if (email === 'admin@nitex.com' && password === '123456') {
       const admin: User = {
         id: 'admin_1',
-        email: 'admin@demo.com',
+        email: 'admin@nitex.com',
         name: 'Administrador Nitex',
         role: 'admin',
         enrolledCourses: [],
@@ -103,6 +102,9 @@ export class AuthService {
     
     // In a real app we'd verify hash.
     if (user && user.password === password) {
+      if (user.blocked) {
+        return { success: false, message: 'Tu cuenta ha sido bloqueada por un administrador.' };
+      }
       this.resetSecurityState();
       this.setSession(user);
       return { success: true };
@@ -119,7 +121,7 @@ export class AuthService {
       localStorage.setItem('nitex_lockout_until', until.toString());
       return { 
         success: false, 
-        message: 'Has excedido los intentos. Debes esperar 1 minutos antes de intentar nuevamente.',
+        message: 'Demasiados intentos, intenta más tarde o recupera tu contraseña',
         showRecovery: true
       };
     }

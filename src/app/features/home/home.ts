@@ -188,7 +188,11 @@ export class Home implements OnInit, OnDestroy {
   private courseService = inject(CourseService);
   private auth = inject(AuthService);
   
-  featuredCourses = computed(() => this.courseService.getAllCourses()().slice(0, 3));
+  featuredCourses = computed(() => {
+    const all = this.courseService.getAllCourses()();
+    const featured = all.filter(c => c.featured);
+    return featured.length > 0 ? featured : all.slice(0, 3);
+  });
   user = computed(() => this.auth.currentUser());
   
   ngOnInit() {}

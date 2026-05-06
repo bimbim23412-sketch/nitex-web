@@ -13,18 +13,20 @@ import { About } from './features/about/about';
 import { FinalExam } from './features/courses/final-exam';
 import { CertificateViewer } from './features/profile/certificate-viewer';
 
+import { authGuard, adminGuard } from './core/guards/auth.guard';
+
 export const routes: Routes = [
-  { path: '', component: Home },
-  { path: 'courses', component: CourseList },
-  { path: 'courses/:id', component: CourseDetail },
-  { path: 'learning/:id', component: LearningClassroom },
-  { path: 'exam/:id', component: FinalExam },
-  { path: 'about', component: About },
-  { path: 'auth/login', component: Login },
-  { path: 'auth/register', component: Register },
-  { path: 'auth/forgot-password', component: ForgotPassword },
-  { path: 'profile', component: ProfileDashboard },
-  { path: 'certificates/:id', component: CertificateViewer },
-  { path: 'admin', component: AdminPanel },
+  { path: '', component: Home, title: 'Inicio' },
+  { path: 'courses', component: CourseList, title: 'Cursos', canActivate: [authGuard] },
+  { path: 'courses/:id', component: CourseDetail, title: 'Detalle del Curso', canActivate: [authGuard] },
+  { path: 'learning/:id', component: LearningClassroom, title: 'Aula Virtual', canActivate: [authGuard] },
+  { path: 'exam/:id', component: FinalExam, title: 'Examen Final', canActivate: [authGuard] },
+  { path: 'about', component: About, title: 'Nosotros' },
+  { path: 'auth/login', component: Login, title: 'Iniciar sesión' },
+  { path: 'auth/register', component: Register, title: 'Registro' },
+  { path: 'auth/forgot-password', component: ForgotPassword, title: 'Recuperar Contraseña' },
+  { path: 'profile', component: ProfileDashboard, title: 'Mi Perfil', canActivate: [authGuard] },
+  { path: 'certificates/:id', component: CertificateViewer, title: 'Certificado', canActivate: [authGuard] },
+  { path: 'admin', component: AdminPanel, title: 'Panel de Control', canActivate: [adminGuard] },
   { path: '**', redirectTo: '' }
 ];

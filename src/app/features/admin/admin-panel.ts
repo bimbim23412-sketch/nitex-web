@@ -104,12 +104,24 @@ import { Router } from '@angular/router';
                 </div>
                 
                 <div class="mt-12 p-12 bg-slate-900 rounded-[64px] text-white relative overflow-hidden">
-                   <div class="absolute top-0 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"></div>
-                   <div class="relative z-10 space-y-4">
-                      <h3 class="text-3xl font-black italic uppercase tracking-tighter">Resumen de Actividad</h3>
-                      <p class="text-white/60 font-medium italic">La plataforma Nitex está operando con un rendimiento del 99.9% hoy.</p>
-                   </div>
-                </div>
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"></div>
+                    <div class="relative z-10 space-y-8">
+                       <div>
+                          <h3 class="text-3xl font-black italic uppercase tracking-tighter">Activos Educativos Recientes</h3>
+                          <p class="text-white/60 font-medium italic">Últimos cursos inyectados en la plataforma.</p>
+                       </div>
+                       
+                       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                          @for (course of allCourses().slice(0, 4); track course.id) {
+                             <div class="bg-white/5 border border-white/10 p-6 rounded-[32px] backdrop-blur-md">
+                                <img [src]="course.image" class="w-full h-32 object-cover rounded-2xl mb-4 border border-white/10">
+                                <p class="text-[10px] font-black text-primary-400 uppercase tracking-widest">{{ course.category }}</p>
+                                <p class="text-xs font-bold truncate mt-1">{{ course.title }}</p>
+                             </div>
+                          }
+                       </div>
+                    </div>
+                 </div>
              }
 
              @if (activeView() === 'Usuarios') {
@@ -137,7 +149,7 @@ import { Router } from '@angular/router';
                             </div>
                           </td>
                           <td class="px-12 py-10">
-                            <div class="space-y-3">
+                               <div class="space-y-3">
                                <div class="flex justify-between text-[9px] font-black uppercase tracking-widest text-slate-400 px-1">
                                   <span>Avance</span>
                                   <span>{{ user.completedLessons.length * 5 }}%</span>
@@ -148,15 +160,41 @@ import { Router } from '@angular/router';
                             </div>
                           </td>
                           <td class="px-12 py-10 text-right">
-                             <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
-                               <button (click)="editUser(user)" class="w-12 h-12 rounded-2xl bg-white text-slate-400 hover:text-primary-500 shadow-sm border border-slate-100 flex-center transition-all hover:scale-110"><mat-icon class="scale-75">edit</mat-icon></button>
-                               <button (click)="deleteUser(user)" [disabled]="user.role === 'admin'" class="w-12 h-12 rounded-2xl bg-white text-slate-400 hover:text-rose-500 shadow-sm border border-slate-100 flex-center transition-all disabled:opacity-10 hover:scale-110"><mat-icon class="scale-75">delete</mat-icon></button>
+                             <div class="flex justify-end gap-2">
+                               <button (click)="editUser(user)" title="Cambiar Rol" class="w-10 h-10 rounded-xl bg-white text-slate-400 hover:text-primary-500 shadow-sm border border-slate-100 flex-center transition-all hover:scale-110"><mat-icon class="scale-75">admin_panel_settings</mat-icon></button>
+                               <button (click)="toggleBlockUser(user)" [title]="user.blocked ? 'Desbloquear' : 'Bloquear'" class="w-10 h-10 rounded-xl bg-white text-slate-400 hover:text-amber-500 shadow-sm border border-slate-100 flex-center transition-all hover:scale-110"><mat-icon class="scale-75">{{ user.blocked ? 'lock_open' : 'lock' }}</mat-icon></button>
+                               <button (click)="deleteUser(user)" title="Eliminar" [disabled]="user.role === 'admin'" class="w-10 h-10 rounded-xl bg-white text-slate-400 hover:text-rose-500 shadow-sm border border-slate-100 flex-center transition-all disabled:opacity-10 hover:scale-110"><mat-icon class="scale-75">delete</mat-icon></button>
                              </div>
                           </td>
                         </tr>
                       }
                     </tbody>
                   </table>
+               </div>
+             }
+
+             @if (activeView() === 'Certificados') {
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 @for (cert of getAllCertificates(); track cert.id) {
+                   <div class="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm">
+                      <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-2xl flex-center"><mat-icon>military_tech</mat-icon></div>
+                        <div>
+                           <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ cert.userName }}</p>
+                           <p class="text-lg font-black text-text-title italic uppercase">{{ cert.courseName }}</p>
+                        </div>
+                      </div>
+                      <p class="text-xs font-medium text-text-muted mt-4">ID: {{ cert.id }} | Emisión: {{ cert.date | date:'shortDate' }}</p>
+                   </div>
+                 }
+               </div>
+             }
+
+             @if (activeView() === 'Exámenes') {
+               <div class="bg-white p-12 rounded-[64px] border border-slate-100 shadow-sm text-center">
+                 <mat-icon class="text-6xl text-slate-200 mb-6">quiz</mat-icon>
+                 <h2 class="text-3xl font-black text-text-title tracking-tighter uppercase italic">Módulo de Evaluación</h2>
+                 <p class="text-lg text-text-muted font-medium italic mt-2">Los exámenes se configuran desde la edición de cada curso.</p>
                </div>
              }
 
@@ -197,18 +235,23 @@ import { Router } from '@angular/router';
 })
 export class AdminPanel {
   public auth = inject(AuthService);
-  private courseService = inject(CourseService);
+  public courseService = inject(CourseService);
   private router = inject(Router);
 
   activeView = signal('Dashboard');
   menuItems = [
     { label: 'Dashboard', icon: 'dashboard', view: 'Dashboard' },
     { label: 'Cursos', icon: 'school', view: 'Cursos' },
-    { label: 'Usuarios', icon: 'people', view: 'Usuarios' }
+    { label: 'Usuarios', icon: 'people', view: 'Usuarios' },
+    { label: 'Exámenes', icon: 'quiz', view: 'Exámenes' },
+    { label: 'Certificados', icon: 'workspace_premium', view: 'Certificados' }
   ];
 
   allUsers = signal<User[]>([]);
   allCourses = computed(() => this.courseService.getAllCourses()());
+
+  editingUser = signal<User | null>(null);
+  editingCourse = signal<Course | null>(null);
 
   constructor() {
     if (this.auth.currentUser()?.role !== 'admin') {
@@ -222,11 +265,24 @@ export class AdminPanel {
   }
 
   editUser(user: User) {
-    const name = prompt('Nuevo nombre del estudiante:', user.name);
-    if (name) {
+    const role = user.role === 'admin' ? 'student' : 'admin';
+    if (confirm(`¿Cambiar rol de ${user.name} a ${role}?`)) {
       const users = [...this.allUsers()];
       const idx = users.findIndex(u => u.id === user.id);
-      users[idx] = { ...users[idx], name };
+      users[idx] = { ...users[idx], role };
+      localStorage.setItem('nitex_users_db', JSON.stringify(users));
+      this.refreshData();
+    }
+  }
+
+  toggleBlockUser(user: User) {
+    if (user.role === 'admin') return;
+    const isBlocked = (user as any).blocked;
+    const action = isBlocked ? 'Desbloquear' : 'Bloquear';
+    if (confirm(`¿${action} a ${user.name}?`)) {
+      const users = [...this.allUsers()];
+      const idx = users.findIndex(u => u.id === user.id);
+      users[idx] = { ...users[idx], blocked: !isBlocked } as any;
       localStorage.setItem('nitex_users_db', JSON.stringify(users));
       this.refreshData();
     }
@@ -247,16 +303,16 @@ export class AdminPanel {
        const newCourse: Course = {
           id: 'new-' + Date.now(),
           title,
-          category: 'Tecnología',
-          shortDescription: 'Nuevo curso inyectado desde el panel admin.',
-          fullDescription: 'Descripción extendida del curso.',
+          category: 'General',
+          shortDescription: 'Descripción corta.',
+          fullDescription: 'Descripción completa.',
           image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800',
           level: 'Básico',
-          duration: '20h',
-          lessonsCount: 5,
+          duration: '10h',
+          lessonsCount: 3,
           rating: 5.0,
           instructor: 'Admin Instructor',
-          video: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+          video: 'https://www.youtube.com/embed/jfKfPfyJRdk'
        };
        this.courseService.addCourse(newCourse);
     }
@@ -264,14 +320,31 @@ export class AdminPanel {
 
   editCourse(course: Course) {
     const newTitle = prompt('Nuevo título para el curso:', course.title);
-    if (newTitle) {
-       this.courseService.updateCourse({ ...course, title: newTitle });
-    }
+    if (newTitle === null) return;
+    
+    const newImg = prompt('URL de la nueva imagen de portada:', course.image);
+    if (newImg === null) return;
+
+    this.courseService.updateCourse({ 
+      ...course, 
+      title: newTitle || course.title,
+      image: newImg || course.image
+    });
   }
 
   deleteCourse(course: Course) {
-    if (confirm(`¿Eliminar ${course.title} permanentemente del catálogo de élite?`)) {
+    if (confirm(`¿Eliminar ${course.title} permanentemente?`)) {
       this.courseService.deleteCourse(course.id);
     }
+  }
+
+  getAllCertificates() {
+    let certs: any[] = [];
+    this.allUsers().forEach(u => {
+      if (u.certificates) {
+        certs = certs.concat(u.certificates.map(c => ({...c, userName: u.name})));
+      }
+    });
+    return certs;
   }
 }

@@ -22,7 +22,7 @@ import { Course } from '../../core/models/course.model';
               <div class="w-28 h-28 rounded-[40px] p-1 bg-gradient-to-tr from-primary-400 to-primary-100 shadow-xl overflow-hidden">
                  <img [src]="user()?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user()?.name" class="w-full h-full object-cover rounded-[32px] bg-white">
               </div>
-              <span class="absolute bottom-0 right-0 w-8 h-8 bg-emerald-500 border-4 border-white rounded-2xl shadow-lg"></span>
+              <span class="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 border-4 border-white rounded-2xl shadow-lg"></span>
            </div>
            <div>
               <h2 class="text-xl font-black text-text-title tracking-tighter uppercase italic leading-none">{{ user()?.name }}</h2>
@@ -113,17 +113,22 @@ import { Course } from '../../core/models/course.model';
                @if (certificates().length > 0) {
                  @for (cert of certificates(); track cert.id) {
                     <div class="bg-white rounded-[48px] p-10 border border-slate-100 shadow-sm flex items-center gap-8 group hover:shadow-2xl transition-all">
-                       <div class="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-[32px] flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
+                       <div class="w-24 h-24 bg-primary-50 text-primary-500 rounded-[32px] flex items-center justify-center group-hover:bg-primary-500 group-hover:text-white transition-all shadow-sm">
                           <mat-icon class="scale-[1.8]">military_tech</mat-icon>
                        </div>
                        <div class="flex-grow space-y-2">
-                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Certificación Oficial</p>
+                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Aprobado con Éxito</p>
                           <h3 class="text-2xl font-black text-text-title tracking-tighter italic uppercase leading-none">{{ cert.courseName }}</h3>
-                          <p class="text-[10px] font-black text-primary-500 uppercase tracking-widest opacity-60">ID: {{ cert.id }}</p>
+                          <p class="text-[10px] font-black text-primary-500 uppercase tracking-widest opacity-60">ID: {{ cert.id }} • {{ cert.date | date:'shortDate' }}</p>
                        </div>
-                        <a [routerLink]="['/certificates', cert.id]" class="px-8 py-4 bg-primary-500 text-white rounded-[20px] text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-primary-500/20">
-                           Ver Certificado
-                        </a>
+                       <div class="flex flex-col gap-2">
+                          <a [routerLink]="['/certificates', cert.id]" class="px-8 py-4 bg-primary-500 text-white rounded-[20px] text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-primary-500/20 flex items-center gap-2">
+                             <mat-icon class="scale-75">visibility</mat-icon> Ver
+                          </a>
+                          <a [routerLink]="['/certificates', cert.id]" class="px-8 py-4 bg-slate-900 text-white rounded-[20px] text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg flex items-center gap-2">
+                             <mat-icon class="scale-75">download</mat-icon> Descargar
+                          </a>
+                       </div>
                     </div>
                  }
                } @else {
@@ -145,29 +150,30 @@ import { Course } from '../../core/models/course.model';
                <!-- Left Card: Personal Info -->
                <div class="lg:col-span-8 bg-white rounded-[64px] p-12 lg:p-16 border border-slate-100 shadow-sm space-y-12">
                   <div class="space-y-2">
-                     <h2 class="text-3xl font-black text-text-title uppercase italic tracking-tighter">Información Personal</h2>
-                     <p class="text-sm text-text-muted font-medium italic">Gestiona tu identidad y seguridad.</p>
+                     <h2 class="text-3xl font-black text-text-title uppercase italic tracking-tighter">Configuración de Perfil</h2>
+                     <p class="text-sm text-text-muted font-medium italic">Actualiza tu información personal y foto de perfil.</p>
                   </div>
 
                   <div class="flex items-center gap-10 py-6">
-                     <div class="relative">
-                        <div class="w-32 h-32 rounded-[40px] p-1 bg-gradient-to-tr from-primary-400 to-primary-100 shadow-xl overflow-hidden">
+                     <div class="relative group">
+                        <div class="w-32 h-32 rounded-[40px] p-1 bg-gradient-to-tr from-primary-500 to-primary-100 shadow-xl overflow-hidden group-hover:scale-105 transition-transform duration-500">
                            <img [src]="avatarPreview() || user()?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user()?.name" class="w-full h-full object-cover rounded-[32px] bg-white">
                         </div>
-                        <label class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-500 text-white rounded-2xl flex items-center justify-center shadow-lg cursor-pointer hover:bg-primary-600 border-4 border-white">
+                        <label class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-500 text-white rounded-2xl flex items-center justify-center shadow-lg cursor-pointer hover:bg-primary-600 border-4 border-white transition-all hover:scale-110">
                            <mat-icon class="scale-75">camera_alt</mat-icon>
                            <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*">
                         </label>
                      </div>
                      <div class="space-y-2">
-                        <button (click)="triggerFileInput()" class="px-8 py-4 border border-slate-200 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all">Cambiar foto</button>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Formatos: JPG, PNG</p>
+                        <h3 class="text-lg font-black text-text-title italic leading-none">Foto de Perfil</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sube una imagen cuadrada para mejores resultados.</p>
+                        <button (click)="triggerFileInput()" class="text-primary-600 text-[10px] font-black uppercase tracking-widest hover:underline mt-2 block">Seleccionar archivo</button>
                      </div>
                   </div>
 
                   <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-8">
                      <div class="space-y-3">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Nombre Completo</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Nombre</label>
                         <div class="input-group">
                            <div class="input-icon-wrapper">
                               <mat-icon class="scale-90">person</mat-icon>
@@ -265,7 +271,7 @@ export class ProfileDashboard implements OnInit {
   ];
 
   myCourses = computed(() => {
-    return this.courseService.getAllCourses()().filter(c => c.featured || this.user()?.enrolledCourses.includes(c.id));
+    return this.courseService.getAllCourses()().filter(c => this.user()?.enrolledCourses.includes(c.id));
   });
 
   certificates = computed(() => {

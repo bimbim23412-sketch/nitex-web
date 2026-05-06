@@ -12,6 +12,7 @@ export interface User {
   lastActiveCourseId?: string;
   phone?: string;
   createdAt: number;
+  blocked?: boolean;
 }
 
 export interface Certificate {

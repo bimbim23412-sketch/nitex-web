@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-about',
@@ -145,28 +146,33 @@ import { RouterLink } from '@angular/router';
       </section>
 
       <!-- 🚀 SaaS CTA -->
-      <section class="py-40 px-6">
-         <div class="max-w-7xl mx-auto rounded-[80px] bg-text-title p-20 lg:p-32 text-center text-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-500/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
-            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-500/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3"></div>
-            
-            <div class="relative z-10 space-y-12">
-               <h2 class="text-5xl md:text-8xl font-black tracking-tighter leading-none italic uppercase animate-fade-up">Únete a la <br> <span class="text-primary-500 underline decoration-white/10">Academia</span> Elite.</h2>
-               <p class="max-w-2xl mx-auto text-xl text-slate-400 font-medium opacity-80 animate-fade-up">
-                  Comienza hoy tu transformación profesional con acceso ilimitado a nuestro ecosistema de aprendizaje.
-               </p>
-               <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10 animate-fade-up">
-                  <button routerLink="/auth/register" class="w-full sm:w-auto px-16 py-8 bg-primary-500 text-white rounded-3xl text-xs font-black uppercase tracking-[0.2em] hover:bg-white hover:text-text-title transition-all duration-500 shadow-2xl shadow-primary-500/20">Forjar mi Destino</button>
-                  <button routerLink="/courses" class="w-full sm:w-auto px-16 py-8 border border-white/10 rounded-3xl text-xs font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all duration-500">Explorar Catálogo</button>
-               </div>
-            </div>
-         </div>
-      </section>
+      @if (!isLoggedIn()) {
+        <section class="py-40 px-6">
+           <div class="max-w-7xl mx-auto rounded-[80px] bg-text-title p-20 lg:p-32 text-center text-white relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-500/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+              <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-500/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3"></div>
+              
+              <div class="relative z-10 space-y-12">
+                 <h2 class="text-5xl md:text-8xl font-black tracking-tighter leading-none italic uppercase animate-fade-up">Únete a la <br> <span class="text-primary-500 underline decoration-white/10">Academia</span> Elite.</h2>
+                 <p class="max-w-2xl mx-auto text-xl text-slate-400 font-medium opacity-80 animate-fade-up">
+                    Comienza hoy tu transformación profesional con acceso ilimitado a nuestro ecosistema de aprendizaje.
+                 </p>
+                 <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10 animate-fade-up">
+                    <button routerLink="/auth/register" class="w-full sm:w-auto px-16 py-8 bg-primary-500 text-white rounded-3xl text-xs font-black uppercase tracking-[0.2em] hover:bg-white hover:text-text-title transition-all duration-500 shadow-2xl shadow-primary-500/20">Forjar mi Destino</button>
+                    <button routerLink="/courses" class="w-full sm:w-auto px-16 py-8 border border-white/10 rounded-3xl text-xs font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all duration-500">Explorar Catálogo</button>
+                 </div>
+              </div>
+           </div>
+        </section>
+      }
 
     </div>
   `
 })
 export class About {
+  private auth = inject(AuthService);
+  isLoggedIn = computed(() => !!this.auth.currentUser());
+
   values = [
     { icon: 'diamond', title: 'Excelencia Elite', desc: 'No aceptamos lo mediocre. Cada curso es supervisado para garantizar el máximo nivel técnico y pedagógico.' },
     { icon: 'speed', title: 'Velocidad de Adaptación', desc: 'El mundo cambia cada día. Nuestra currícula se actualiza en tiempo real con las últimas tendencias de la industria.' },
@@ -174,9 +180,9 @@ export class About {
   ];
 
   team = [
-    { name: 'Marcus Nitex', role: 'Founder & Visionary', image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus' },
-    { name: 'Elena Vance', role: 'Head of Education', image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Elena' },
-    { name: 'Jared Sun', role: 'UX Director', image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jared' },
-    { name: 'Sofia Bell', role: 'Lead Strategist', image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia' }
+    { name: 'Marcus Nitex', role: 'Founder & Visionary', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Elena Vance', role: 'Head of Education', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Jared Sun', role: 'UX Director', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Sofia Bell', role: 'Lead Strategist', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400' }
   ];
 }

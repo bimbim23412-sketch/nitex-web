@@ -77,10 +77,15 @@ import { debounceTime, startWith } from 'rxjs';
                       </div>
                     </div>
 
-                    <!-- 📝 Nombre del Curso -->
-                    <h3 class="text-2xl lg:text-3xl font-black text-text-title leading-tight mb-8 italic uppercase tracking-tighter group-hover:text-primary-500 transition-colors">
-                      {{ course.title }}
-                    </h3>
+                    <!-- 📝 Nombre y Descripción -->
+                    <div class="space-y-4 mb-8">
+                      <h3 class="text-2xl lg:text-3xl font-black text-text-title leading-tight italic uppercase tracking-tighter group-hover:text-primary-500 transition-colors">
+                        {{ course.title }}
+                      </h3>
+                      <p class="text-sm text-text-muted font-medium italic line-clamp-2 leading-relaxed">
+                        {{ course.shortDescription }}
+                      </p>
+                    </div>
 
                     <div class="flex items-center gap-6 mb-8 opacity-60">
                       <div class="flex items-center gap-2 text-primary-600">
@@ -147,7 +152,7 @@ export class CourseList {
   
   searchControl = new FormControl('');
   selectedCategory = signal('Todos');
-  categories = ['Todos', 'Belleza y estética', 'Tecnología', 'Idiomas', 'Educación'];
+  categories = ['Todos', 'Administración', 'Belleza', 'Finanzas', 'Salud', 'Tecnología', 'Idiomas'];
 
   private courses = this.courseService.getAllCourses();
   private searchTerm = signal('');
@@ -155,7 +160,7 @@ export class CourseList {
 
   goToCourse(courseId: string) {
     if (this.isEnrolled(courseId)) {
-      this.router.navigate(['/classroom', courseId]);
+      this.router.navigate(['/learning', courseId]);
     } else {
       this.router.navigate(['/courses', courseId]);
     }
@@ -192,10 +197,12 @@ export class CourseList {
   getCategoryIcon(category: string): string {
     const icons: any = {
       'Todos': 'grid_view',
-      'Belleza y estética': 'face',
+      'Administración': 'business',
+      'Belleza': 'face',
+      'Finanzas': 'payments',
+      'Salud': 'medical_services',
       'Tecnología': 'terminal',
-      'Idiomas': 'translate',
-      'Educación': 'school'
+      'Idiomas': 'translate'
     };
     return icons[category] || 'folder';
   }

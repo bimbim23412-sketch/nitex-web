@@ -64,9 +64,9 @@ import { MatIconModule } from '@angular/material/icon';
           <!-- Step 2 & 3: Verify Code -->
           @if (step() === 2) {
             <div class="space-y-6 animate-fade-right">
-               <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center gap-3">
-                  <mat-icon class="text-emerald-500 scale-75">check_circle</mat-icon>
-                  <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest leading-tight">Se ha enviado un código a tu correo</p>
+               <div class="p-4 bg-primary-50 border border-primary-100 rounded-2xl flex items-center gap-3">
+                  <mat-icon class="text-primary-500 scale-75">check_circle</mat-icon>
+                  <p class="text-[10px] font-bold text-primary-600 uppercase tracking-widest leading-tight">Se ha enviado un código a tu correo</p>
                </div>
                <div class="space-y-2">
                   <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Código de 6 dígitos</label>
@@ -115,7 +115,7 @@ import { MatIconModule } from '@angular/material/icon';
           <!-- Success State -->
           @if (step() === 4) {
             <div class="text-center space-y-8 animate-fade-up">
-               <div class="w-20 h-20 bg-emerald-500 text-white rounded-full flex-center mx-auto shadow-xl shadow-emerald-500/20">
+               <div class="w-20 h-20 bg-primary-500 text-white rounded-full flex-center mx-auto shadow-xl shadow-primary-500/20">
                   <mat-icon class="scale-150">verified_user</mat-icon>
                </div>
                <div class="space-y-2">

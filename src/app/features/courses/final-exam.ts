@@ -87,13 +87,15 @@ import { Course } from '../../core/models/course.model';
                 </div>
                 <div class="bg-white p-10 rounded-[48px] border border-slate-100 shadow-sm flex flex-col items-center justify-center">
                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Estado</p>
-                   <span [class]="score() >= 70 ? 'text-emerald-500' : 'text-rose-500'" class="text-3xl font-black uppercase italic">{{ score() >= 70 ? 'Aprobado' : 'Reprobado' }}</span>
+                   <span [class]="score() >= 70 ? 'text-primary-500' : 'text-rose-500'" class="text-3xl font-black uppercase italic">{{ score() >= 70 ? 'Aprobado' : 'Reprobado' }}</span>
                 </div>
              </div>
 
              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
                 @if (score() >= 70) {
                   <button (click)="goToCertificates()" class="btn-primary py-6 px-12 rounded-[32px]">Ver Mi Certificado</button>
+                } @else {
+                  <button (click)="retryExam()" class="btn-primary py-6 px-12 rounded-[32px]">Repetir Examen</button>
                 }
                 <button routerLink="/courses" class="btn-secondary py-6 px-12 rounded-[32px]">Volver al Catálogo</button>
              </div>
@@ -156,25 +158,24 @@ export class FinalExam implements OnInit {
     this.score.set(Math.round((correctAnswers / questions.length) * 100));
     this.examFinished.set(true);
 
-    // Save result to user profile
-    const u = this.auth.currentUser();
-    if (u && this.score() >= 70) {
-       const res = { ...u.examResults, [this.exam().id]: this.score() };
-       const certs = [...u.certificates];
-       if (!certs.find(c => c.id === this.exam().id)) {
-          certs.push({
-            id: this.exam().id,
-            courseId: this.exam().id.replace('_final_exam', ''),
-            courseName: this.course()?.title || 'Curso Nitex',
-            date: Date.now(),
-            qrCode: 'NITEX-' + Math.random().toString(36).substring(2, 9).toUpperCase()
-          });
-       }
-       this.auth.updateUser({ ...u, examResults: res, certificates: certs });
+    // Save result and generate certificate via service
+    if (this.courseId) {
+      this.courseService.saveExamResult(this.courseId, this.score());
+      if (this.score() >= 70) {
+        this.courseService.generateCertificate(this.courseId);
+      }
     }
   }
 
   goToCertificates() {
     this.router.navigate(['/certificates', this.exam().id]);
+  }
+
+  retryExam() {
+    this.currentQuestionIndex.set(0);
+    this.selectedOption.set(null);
+    this.answers.set([]);
+    this.examFinished.set(false);
+    this.score.set(0);
   }
 }
