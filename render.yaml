@@ -3,7 +3,7 @@ services:
     name: nitex-app
     runtime: node
     buildCommand: npm install && npm run build
-    startCommand: node server.js
+    startCommand: npx serve -s dist/app/browser
     envVars:
       - key: NODE_VERSION
         value: 20

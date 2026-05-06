@@ -23,6 +23,7 @@
             "define": {
               "GEMINI_API_KEY": "'YOUR_GEMINI_API_KEY'"
             },
+            "outputPath": "dist/app",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
