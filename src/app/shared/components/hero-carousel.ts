@@ -12,7 +12,7 @@ import { AuthService } from '../../core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div 
-      class="relative w-full min-h-[600px] lg:h-[700px] overflow-hidden bg-white"
+      class="relative w-full h-[500px] lg:h-[700px] overflow-hidden bg-white"
       (mouseenter)="stopAutoplay()"
       (mouseleave)="startAutoplay()"
       (touchstart)="onTouchStart($event)"
@@ -27,84 +27,62 @@ import { AuthService } from '../../core/services/auth.service';
           [class.pointer-events-none]="currentSlide() !== i"
           [style.visibility]="currentSlide() === i ? 'visible' : 'hidden'"
         >
-          <div class="max-w-7xl mx-auto h-full px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
+          <div class="max-w-7xl mx-auto h-full px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16">
             
             <!-- Left Side Content -->
-            <div class="space-y-6 relative z-20 pt-16 lg:pt-0" [class.animate-slide-up]="currentSlide() === i" [class.opacity-0]="currentSlide() !== i">
+            <div class="space-y-4 lg:space-y-6 relative z-20 pt-10 lg:pt-0 text-center lg:text-left" [class.animate-slide-up]="currentSlide() === i" [class.opacity-0]="currentSlide() !== i">
+               <div class="flex items-center justify-center lg:justify-start gap-3 text-primary-500 text-[8px] lg:text-[9px] font-black uppercase tracking-[0.4em] mb-4">
+                  <div class="w-10 h-1 bg-primary-500 rounded-full hidden lg:block"></div>
+                  <span>Educación Técnica Superior</span>
+               </div>
                
-               <h1 class="text-5xl lg:text-7xl font-black text-text-title tracking-tighter leading-[1.1]">
+               <h1 class="text-3xl md:text-5xl lg:text-7xl font-black text-text-title tracking-tighter leading-[1.1] uppercase italic">
                   Capacítate hoy, <br> transforma <span class="text-primary-500">tu futuro</span>
                </h1>
 
-               <p class="text-xl lg:text-2xl text-text-muted font-medium max-w-xl leading-relaxed">
+               <p class="text-sm lg:text-xl text-text-muted font-medium italic leading-relaxed max-w-xl mx-auto lg:mx-0">
                   {{ course.shortDescription }}
                </p>
 
-               <div class="flex flex-col sm:flex-row items-center gap-6 pt-6">
-                  <a routerLink="/courses" class="btn-primary group w-full sm:w-auto">
-                    <div class="icon-text">
-                       <span>Explorar Catálogo</span>
+               <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-6">
+                  <a routerLink="/courses" class="btn-primary group w-full sm:w-auto py-4 lg:py-6 px-10 lg:px-16 rounded-[24px] lg:rounded-[32px] text-[10px] lg:text-xs">
+                    <div class="icon-text flex items-center justify-center gap-2">
+                       <span>Catálogo Elite</span>
                        <mat-icon class="scale-90 group-hover:translate-x-2 transition-transform">school</mat-icon>
                     </div>
                   </a>
                   @if (!user()) {
-                    <a routerLink="/auth/register" class="btn-secondary group w-full sm:w-auto">
-                      <div class="icon-text">
+                    <a routerLink="/auth/register" class="btn-secondary group w-full sm:w-auto py-4 lg:py-6 px-10 lg:px-16 rounded-[24px] lg:rounded-[32px] text-[10px] lg:text-xs">
+                      <div class="icon-text flex items-center justify-center gap-2">
                          <mat-icon class="text-primary-500 scale-90 group-hover:rotate-12 transition-transform">person_add</mat-icon>
                          <span>Crear cuenta</span>
-                      </div>
-                    </a>
-                  } @else {
-                    <a routerLink="/profile" class="btn-secondary group w-full sm:w-auto">
-                      <div class="icon-text">
-                         <mat-icon class="text-primary-500 scale-90 group-hover:rotate-12 transition-transform">dashboard</mat-icon>
-                         <span>Mi Dashboard</span>
                       </div>
                     </a>
                   }
                </div>
             </div>
 
-            <!-- Right Side Image & Cards -->
-            <div class="relative h-full flex items-center justify-center lg:justify-end animate-fade-in">
-               <!-- Abstract background circles -->
+            <!-- Right Side Image (Desktop Only for better focus on mobile) -->
+            <div class="relative hidden lg:flex items-center justify-end animate-fade-in">
                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-50 rounded-full blur-[100px] opacity-60"></div>
                
                <div class="relative">
-                  <!-- Main Student Image -->
-                  <div class="w-[350px] lg:w-[550px] relative z-10">
+                  <div class="w-[350px] lg:w-[500px] relative z-10">
                      <img 
                        [src]="course.image" 
-                       class="w-full h-auto rounded-[80px] shadow-2xl relative z-10" 
+                       class="w-full h-auto rounded-[60px] lg:rounded-[80px] shadow-2xl relative z-10" 
                        [alt]="course.title"
                      >
                      
-                     <!-- Premium Info Cards (Floating) -->
-                     <div class="absolute -top-10 -right-10 lg:-right-20 bg-white p-6 rounded-[32px] shadow-[0_30px_60px_rgba(0,0,0,0.08)] border border-slate-100 flex items-center gap-5 min-w-[280px] z-20 animate-bounce-slow">
-                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-[24px] flex items-center justify-center shrink-0">
-                           <mat-icon class="scale-110">verified</mat-icon>
+                     <!-- Floating Badge -->
+                     <div class="absolute -top-10 -right-10 bg-white p-6 rounded-[32px] shadow-2xl border border-slate-100 flex items-center gap-5 z-20 animate-bounce-slow">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center shrink-0">
+                           <mat-icon>verified</mat-icon>
                         </div>
                         <div>
-                           <p class="text-[11px] font-black text-text-title uppercase tracking-widest">Certificado incluido</p>
-                           <p class="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5">Al finalizar cada curso</p>
+                           <p class="text-[10px] font-black text-text-title uppercase tracking-widest">Certificado</p>
+                           <p class="text-[8px] font-bold text-text-muted uppercase tracking-widest mt-0.5">Validez Industrial</p>
                         </div>
-                     </div>
-
-                     <div class="absolute -bottom-10 -left-10 lg:-left-20 bg-white p-6 rounded-[32px] shadow-[0_30px_60px_rgba(0,0,0,0.08)] border border-slate-100 flex items-center gap-5 min-w-[280px] z-20 animate-bounce-slow-delayed">
-                        <div class="w-14 h-14 bg-primary-50 text-primary-500 rounded-[24px] flex items-center justify-center shrink-0">
-                           <mat-icon class="scale-110">schedule</mat-icon>
-                        </div>
-                        <div>
-                           <p class="text-[11px] font-black text-text-title uppercase tracking-widest">Aprende a tu ritmo</p>
-                           <p class="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5">Accede 24/7 desde donde sea</p>
-                        </div>
-                     </div>
-
-                     <!-- Abstract dots -->
-                     <div class="absolute bottom-20 -right-10 grid grid-cols-4 gap-3 opacity-20">
-                        @for (dot of [1,2,3,4,5,6,1,2,3,4,5,6]; track $index) {
-                           <div class="w-2.5 h-2.5 rounded-full bg-primary-500"></div>
-                        }
                      </div>
                   </div>
                </div>
@@ -113,48 +91,33 @@ import { AuthService } from '../../core/services/auth.service';
         </div>
       }
 
-      <!-- Indicators UI -->
-      <div class="absolute bottom-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-10">
-         <div class="flex items-center gap-4">
-            @for (dot of featuredCourses(); track dot.id; let i = $index) {
-              <button 
-                (click)="setSlide(i)"
-                class="transition-all duration-700"
-                [class]="currentSlide() === i ? 'w-10 h-2 bg-primary-500 rounded-full' : 'w-2 h-2 bg-slate-200 rounded-full hover:bg-primary-200'"
-              ></button>
-            }
-         </div>
+      <!-- Indicators -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
+        @for (course of featuredCourses(); track course.id; let idx = $index) {
+          <button 
+            (click)="setSlide(idx)"
+            class="group relative h-1.5 transition-all duration-500 overflow-hidden rounded-full"
+            [class]="currentSlide() === idx ? 'w-12 bg-primary-500 shadow-lg shadow-primary-500/20' : 'w-4 bg-slate-200 hover:bg-slate-300'"
+          >
+          </button>
+        }
       </div>
     </div>
   `,
   styles: [`
-    .vertical-text {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
+    .animate-slide-up {
+      animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
-    @keyframes slide-up {
-      from { opacity: 0; transform: translateY(40px); }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes bounce-slow {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-    .animate-slide-up {
-      animation: slide-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .animate-fade-in {
-      animation: fade-in 1.5s ease-out forwards;
-    }
     .animate-bounce-slow {
-      animation: bounce-slow 4s ease-in-out infinite;
+      animation: bounceSlow 4s infinite ease-in-out;
     }
-    .animate-bounce-slow-delayed {
-      animation: bounce-slow 4s ease-in-out 2s infinite;
+    @keyframes bounceSlow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
     }
   `]
 })
@@ -162,66 +125,44 @@ export class HeroCarousel {
   private courseService = inject(CourseService);
   private auth = inject(AuthService);
   
+  featuredCourses = computed(() => {
+    const all = this.courseService.getAllCourses()();
+    return all.filter(c => c.featured).slice(0, 3);
+  });
+  
   user = computed(() => this.auth.currentUser());
-  featuredCourses = computed(() => this.courseService.getAllCourses()().filter(c => c.featured));
   currentSlide = signal(0);
-  private interval: ReturnType<typeof setInterval> | undefined;
-  private touchStartX = 0;
+  private autoplayInterval: any;
 
   constructor() {
-    effect((onCleanup) => {
-      this.startAutoplay();
-      onCleanup(() => this.stopAutoplay());
-    });
+    this.startAutoplay();
   }
 
-  startAutoplay() {
-    this.stopAutoplay();
-    this.interval = setInterval(() => {
-      this.nextSlide();
-    }, 15000); // 15 seconds
-  }
-
-  stopAutoplay() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-  }
-
-  nextSlide() {
-    this.currentSlide.update(curr => (curr + 1) % this.featuredCourses().length);
-    this.resetAutoplay();
-  }
-
-  prevSlide() {
-    this.currentSlide.update(curr => (curr - 1 + this.featuredCourses().length) % this.featuredCourses().length);
-    this.resetAutoplay();
-  }
-
-  setSlide(index: number) {
-    this.currentSlide.set(index);
-    this.resetAutoplay();
-  }
-
-  private resetAutoplay() {
+  setSlide(idx: number) {
+    this.currentSlide.set(idx);
     this.stopAutoplay();
     this.startAutoplay();
   }
 
-  onTouchStart(event: TouchEvent) {
-    this.touchStartX = event.touches[0].clientX;
+  startAutoplay() {
+    this.autoplayInterval = setInterval(() => {
+      this.currentSlide.update(prev => (prev + 1) % this.featuredCourses().length);
+    }, 6000);
   }
 
-  onTouchEnd(event: TouchEvent) {
-    const touchEndX = event.changedTouches[0].clientX;
-    const diff = this.touchStartX - touchEndX;
+  stopAutoplay() {
+    if (this.autoplayInterval) clearInterval(this.autoplayInterval);
+  }
 
-    if (Math.abs(diff) > 50) { // Threshold for swipe
-      if (diff > 0) {
-        this.nextSlide();
-      } else {
-        this.prevSlide();
-      }
+  // Touch support for mobile
+  private touchStartX = 0;
+  onTouchStart(e: TouchEvent) { this.touchStartX = e.touches[0].clientX; }
+  onTouchEnd(e: TouchEvent) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = this.touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) this.setSlide((this.currentSlide() + 1) % this.featuredCourses().length);
+      else this.setSlide((this.currentSlide() - 1 + this.featuredCourses().length) % this.featuredCourses().length);
     }
   }
 }

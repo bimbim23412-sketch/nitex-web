@@ -191,7 +191,8 @@ export class Home implements OnInit, OnDestroy {
   featuredCourses = computed(() => {
     const all = this.courseService.getAllCourses()();
     const featured = all.filter(c => c.featured);
-    return featured.length > 0 ? featured : all.slice(0, 3);
+    // Aseguramos exactamente 3 cursos para el inicio como solicitó el usuario
+    return featured.length > 0 ? featured.slice(0, 3) : all.slice(0, 3);
   });
   user = computed(() => this.auth.currentUser());
   

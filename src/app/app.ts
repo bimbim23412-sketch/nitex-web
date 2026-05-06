@@ -23,13 +23,13 @@ import { MatIconModule } from '@angular/material/icon';
           
           <!-- Logo -->
           <a routerLink="/" class="flex items-center gap-3 group cursor-pointer text-white">
-            <div class="w-12 h-12 bg-primary-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary-500/20 group-hover:rotate-12 transition-transform duration-500">
-              <mat-icon class="scale-110">rocket_launch</mat-icon>
+            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-primary-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary-500/20 group-hover:rotate-12 transition-transform duration-500">
+              <mat-icon class="scale-90 lg:scale-110">rocket_launch</mat-icon>
             </div>
-            <span class="text-2xl font-black tracking-tighter uppercase italic">Nitex</span>
+            <span class="text-xl lg:text-2xl font-black tracking-tighter uppercase italic">Nitex</span>
           </a>
 
-          <!-- Nav Links (Center Pill) -->
+          <!-- Nav Links (Center Pill - Desktop) -->
           <div class="hidden lg:flex items-center gap-4">
             <div class="flex items-center gap-2 bg-white/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-sm">
               <a routerLink="/" routerLinkActive="!bg-white !text-slate-900 shadow-xl" [routerLinkActiveOptions]="{exact: true}" class="nav-link !text-white/60 hover:!text-white">
@@ -41,54 +41,45 @@ import { MatIconModule } from '@angular/material/icon';
               <a routerLink="/about" routerLinkActive="!bg-white !text-slate-900 shadow-xl" class="nav-link !text-white/60 hover:!text-white">
                 Nosotros
               </a>
-              @if (authService.isAdmin()) {
-                <a routerLink="/admin" class="nav-link !bg-primary-500 !text-white hover:!bg-primary-600 shadow-lg shadow-primary-500/20">
-                  <mat-icon class="scale-75">admin_panel_settings</mat-icon> Panel Admin
-                </a>
-              }
             </div>
+          </div>
 
-            <!-- 🔍 Quick Search -->
+          <!-- Right Side: Auth & Mobile Toggle -->
+          <div class="flex items-center gap-4 lg:gap-6">
+            <!-- 🔍 Desktop Search -->
             <div class="relative group hidden xl:block">
               <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 scale-75 group-focus-within:text-primary-500 transition-colors">search</mat-icon>
               <input 
                 type="text" 
                 placeholder="Buscar cursos..." 
-                class="w-64 bg-white/5 border border-white/10 rounded-full py-3 pl-12 pr-6 text-xs font-bold text-white focus:bg-white/10 focus:border-primary-500 transition-all outline-none"
+                class="w-48 bg-white/5 border border-white/10 rounded-full py-2.5 pl-10 pr-4 text-[11px] font-bold text-white focus:bg-white/10 focus:border-primary-500 transition-all outline-none"
               >
             </div>
-          </div>
 
-          <!-- User Profile / Auth (Right) -->
-          <div class="flex items-center gap-6">
             @if (user()) {
-              <!-- 👤 Profile Dropdown Cluster -->
               <div class="relative">
                 <button 
                   (click)="isMenuOpen.set(!isMenuOpen())"
-                  class="flex items-center gap-4 p-2 pr-5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-sm hover:shadow-md transition-all group"
+                  class="flex items-center gap-3 lg:gap-4 p-1.5 lg:p-2 pr-4 lg:pr-5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-sm hover:shadow-md transition-all group"
                 >
                   <div class="relative shrink-0">
-                    <div class="w-11 h-11 rounded-full p-1 bg-gradient-to-tr from-primary-500 to-primary-100 overflow-hidden shadow-sm flex items-center justify-center">
+                    <div class="w-9 h-9 lg:w-11 lg:h-11 rounded-full p-1 bg-gradient-to-tr from-primary-500 to-primary-100 overflow-hidden shadow-sm flex items-center justify-center">
                       @if (user()?.avatar) {
                         <img [src]="user()?.avatar" class="w-full h-full object-cover rounded-full bg-white">
                       } @else {
-                        <div class="w-full h-full rounded-full bg-white flex items-center justify-center text-primary-600 font-black text-sm">
+                        <div class="w-full h-full rounded-full bg-white flex items-center justify-center text-primary-600 font-black text-xs lg:text-sm">
                           {{ user()?.name?.charAt(0) | uppercase }}
                         </div>
                       }
                     </div>
-                    <!-- Activo Indicator (Cyan) -->
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-primary-500 border-2 border-slate-900 rounded-full"></span>
                   </div>
-                  <div class="text-left hidden lg:block mr-2">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-primary-400 leading-none mb-1">Activo</p>
-                    <p class="text-sm font-bold text-white leading-none truncate max-w-[120px]">{{ user()?.name }}</p>
+                  <div class="text-left hidden md:block mr-1 lg:mr-2">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-primary-400 leading-none mb-1">Activo</p>
+                    <p class="text-xs lg:text-sm font-bold text-white leading-none truncate max-w-[100px] lg:max-w-[120px]">{{ user()?.name }}</p>
                   </div>
-                  <mat-icon class="text-white/40 group-hover:text-primary-500 transition-colors">expand_more</mat-icon>
+                  <mat-icon class="text-white/40 group-hover:text-primary-500 transition-colors scale-90 lg:scale-100">expand_more</mat-icon>
                 </button>
 
-                <!-- 📂 Dropdown Menu -->
                 @if (isMenuOpen()) {
                   <div class="absolute right-0 mt-4 w-72 bg-white rounded-[40px] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.12)] border border-slate-100 overflow-hidden z-[60] animate-fade-up">
                     <div class="p-8 bg-slate-50/50 border-b border-slate-100 text-center">
@@ -99,28 +90,63 @@ import { MatIconModule } from '@angular/material/icon';
                       <a (click)="closeMenu()" routerLink="/profile" class="dropdown-item">
                         <mat-icon>person_outline</mat-icon> Mi Perfil
                       </a>
+                      @if (authService.isAdmin()) {
+                        <a (click)="closeMenu()" routerLink="/admin" class="dropdown-item">
+                          <mat-icon>admin_panel_settings</mat-icon> Panel Admin
+                        </a>
+                      }
                       <div class="h-px bg-slate-50 my-2 mx-4"></div>
                       <button (click)="logout()" class="dropdown-item w-full text-rose-500 hover:bg-rose-50 hover:text-rose-600">
                         <mat-icon>logout</mat-icon> Cerrar sesión
                       </button>
                     </div>
                   </div>
-                  <!-- Overlay for clicking outside -->
                   <div (click)="closeMenu()" class="fixed inset-0 z-50"></div>
                 }
               </div>
             } @else {
-              <div class="flex items-center gap-3">
-                <a routerLink="/auth/login" class="nav-link px-6 py-3 bg-white/80 backdrop-blur-sm border border-white shadow-sm hover:border-primary-200">
-                  Iniciar sesión
+              <div class="hidden sm:flex items-center gap-3">
+                <a routerLink="/auth/login" class="text-[11px] font-black text-white/70 hover:text-white uppercase tracking-widest px-4 py-2">
+                  Entrar
                 </a>
-                <a routerLink="/auth/register" class="btn-primary py-3 px-8 text-xs font-black shadow-lg shadow-primary-500/20">
+                <a routerLink="/auth/register" class="btn-primary py-2.5 px-6 text-[10px] font-black shadow-lg shadow-primary-500/20">
                   Registrarse
                 </a>
               </div>
             }
+
+            <!-- 📱 Mobile Menu Toggle -->
+            <button 
+              (click)="isMobileMenuOpen.set(!isMobileMenuOpen())"
+              class="lg:hidden w-11 h-11 bg-white/5 rounded-2xl flex items-center justify-center text-white border border-white/10"
+            >
+              <mat-icon>{{ isMobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+            </button>
           </div>
         </div>
+
+        <!-- 📱 Mobile Menu Dropdown -->
+        @if (isMobileMenuOpen()) {
+          <div class="absolute top-20 left-0 w-full bg-slate-900 border-b border-white/10 lg:hidden animate-fade-down z-40">
+            <div class="p-6 space-y-3">
+              <a (click)="isMobileMenuOpen.set(false)" routerLink="/" class="flex items-center gap-4 p-4 rounded-2xl text-white/70 font-black uppercase text-[10px] tracking-widest hover:bg-white/5 transition-all">
+                <mat-icon>home</mat-icon> Inicio
+              </a>
+              <a (click)="isMobileMenuOpen.set(false)" routerLink="/courses" class="flex items-center gap-4 p-4 rounded-2xl text-white/70 font-black uppercase text-[10px] tracking-widest hover:bg-white/5 transition-all">
+                <mat-icon>school</mat-icon> Cursos
+              </a>
+              <a (click)="isMobileMenuOpen.set(false)" routerLink="/about" class="flex items-center gap-4 p-4 rounded-2xl text-white/70 font-black uppercase text-[10px] tracking-widest hover:bg-white/5 transition-all">
+                <mat-icon>info</mat-icon> Nosotros
+              </a>
+              @if (!user()) {
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                  <a routerLink="/auth/login" (click)="isMobileMenuOpen.set(false)" class="p-4 rounded-2xl bg-white/5 text-white text-center font-black uppercase text-[10px] tracking-widest">Login</a>
+                  <a routerLink="/auth/register" (click)="isMobileMenuOpen.set(false)" class="p-4 rounded-2xl bg-primary-500 text-white text-center font-black uppercase text-[10px] tracking-widest">Únete</a>
+                </div>
+              }
+            </div>
+          </div>
+        }
       </nav>
 
       <!-- 🚀 Main Viewport -->
@@ -265,6 +291,7 @@ export class App {
 
   user = computed(() => this.authService.currentUser());
   isMenuOpen = signal(false);
+  isMobileMenuOpen = signal(false);
   isScrolled = signal(false);
   currentUrl = signal(this.router.url);
   
