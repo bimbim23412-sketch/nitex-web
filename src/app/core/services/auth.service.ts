@@ -203,12 +203,31 @@ export class AuthService {
   }
 
   logout() {
+    const user = this.currentUser();
+    if (user) {
+      this.logAuditEvent(user.email, 'LOGOUT', 'Sesión cerrada correctamente');
+    }
     this._currentUser.set(null);
     localStorage.removeItem('nitex_user');
     this.router.navigate(['/auth/login']);
   }
 
+  private logAuditEvent(email: string, action: string, details: string) {
+    const logs = JSON.parse(localStorage.getItem('nitex_audit_logs') || '[]');
+    logs.push({
+      id: Math.random().toString(36).substring(2, 9),
+      timestamp: Date.now(),
+      email,
+      action,
+      details
+    });
+    // Keep last 100 logs
+    if (logs.length > 100) logs.shift();
+    localStorage.setItem('nitex_audit_logs', JSON.stringify(logs));
+  }
+
   private setSession(user: User) {
+    this.logAuditEvent(user.email, 'LOGIN', 'Inicio de sesión exitoso');
     this._currentUser.set(user);
     localStorage.setItem('nitex_user', JSON.stringify(user));
   }

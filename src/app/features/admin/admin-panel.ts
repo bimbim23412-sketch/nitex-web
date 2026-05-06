@@ -225,6 +225,38 @@ import { Router } from '@angular/router';
                   </button>
                </div>
              }
+
+             @if (activeView() === 'Auditoría') {
+                <div class="bg-white rounded-[64px] border border-slate-100 overflow-hidden shadow-sm animate-fade-up">
+                   <table class="w-full text-left">
+                     <thead>
+                       <tr class="bg-slate-50 border-b border-slate-100">
+                         <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Fecha / Hora</th>
+                         <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Usuario</th>
+                         <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Acción</th>
+                         <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Detalles</th>
+                       </tr>
+                     </thead>
+                     <tbody class="divide-y divide-slate-50">
+                       @for (log of auditLogs(); track log.id) {
+                         <tr class="hover:bg-slate-50/30 transition-all">
+                           <td class="px-10 py-6 text-[11px] font-bold text-slate-500">{{ log.timestamp | date:'short' }}</td>
+                           <td class="px-10 py-6 text-sm font-black text-text-title italic uppercase tracking-tighter">{{ log.email }}</td>
+                           <td class="px-10 py-6">
+                             <span 
+                               class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest"
+                               [class]="log.action === 'LOGIN' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'"
+                             >
+                               {{ log.action }}
+                             </span>
+                           </td>
+                           <td class="px-10 py-6 text-xs text-text-muted italic">{{ log.details }}</td>
+                         </tr>
+                       }
+                     </tbody>
+                   </table>
+                </div>
+              }
           </div>
 
         </div>
@@ -244,10 +276,12 @@ export class AdminPanel {
     { label: 'Cursos', icon: 'school', view: 'Cursos' },
     { label: 'Usuarios', icon: 'people', view: 'Usuarios' },
     { label: 'Exámenes', icon: 'quiz', view: 'Exámenes' },
-    { label: 'Certificados', icon: 'workspace_premium', view: 'Certificados' }
+    { label: 'Certificados', icon: 'workspace_premium', view: 'Certificados' },
+    { label: 'Auditoría', icon: 'history', view: 'Auditoría' }
   ];
 
   allUsers = signal<User[]>([]);
+  auditLogs = signal<any[]>([]);
   allCourses = computed(() => this.courseService.getAllCourses()());
 
   editingUser = signal<User | null>(null);
@@ -262,6 +296,7 @@ export class AdminPanel {
 
   refreshData() {
     this.allUsers.set(JSON.parse(localStorage.getItem('nitex_users_db') || '[]'));
+    this.auditLogs.set(JSON.parse(localStorage.getItem('nitex_audit_logs') || '[]').reverse());
   }
 
   editUser(user: User) {

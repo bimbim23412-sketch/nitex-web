@@ -139,8 +139,8 @@ export class Login {
   private router = inject(Router);
 
   loginForm: FormGroup = this.fb.group({
-    email: ['student@nitex.com', [Validators.required, Validators.email]],
-    password: ['Nitex123!', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   isLoading = signal(false);

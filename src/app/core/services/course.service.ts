@@ -32,7 +32,7 @@ export class CourseService {
       instructor: "Master Stylist",
       duration: "5 semanas",
       level: "Básico",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+      video: "https://www.youtube.com/embed/v9C0pA-W0_I",
       lessonsCount: 4,
       rating: 4.7
     },
@@ -42,11 +42,11 @@ export class CourseService {
       category: "Finanzas",
       shortDescription: "Manejo de caja, sistemas bancarios y atención al cliente financiero.",
       fullDescription: "Capacitación técnica para el sector bancario. Incluye manejo de efectivo, detección de billetes falsos y software bancario especializado.",
-      image: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=800",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
       instructor: "Experto Financiero",
       duration: "4 semanas",
       level: "Básico",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+      video: "https://www.youtube.com/embed/l59E-G_SbeY",
       lessonsCount: 4,
       rating: 4.9,
       featured: true
@@ -61,7 +61,7 @@ export class CourseService {
       instructor: "Nail Artist Pro",
       duration: "3 semanas",
       level: "Básico",
-      video: "https://www.youtube.com/embed/p1oYI8ZUnB0",
+      video: "https://www.youtube.com/embed/2-nFz4pW52k",
       lessonsCount: 4,
       rating: 4.6
     },
@@ -75,7 +75,7 @@ export class CourseService {
       instructor: "Farmacéutico Titulado",
       duration: "5 semanas",
       level: "Básico",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+      video: "https://www.youtube.com/embed/0_R8fF_x8Xg",
       lessonsCount: 4,
       rating: 4.7
     },
@@ -104,7 +104,7 @@ export class CourseService {
       instructor: "Enfermera Especialista",
       duration: "6 semanas",
       level: "Intermedio",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+      video: "https://www.youtube.com/embed/v9C0pA-W0_I",
       lessonsCount: 4,
       rating: 4.9
     },
@@ -132,7 +132,7 @@ export class CourseService {
       instructor: "Lash Artist Master",
       duration: "3 semanas",
       level: "Intermedio",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+      video: "https://www.youtube.com/embed/17S9MlyIe28",
       lessonsCount: 4,
       rating: 4.8
     },
@@ -156,11 +156,11 @@ export class CourseService {
       category: "Idiomas",
       shortDescription: "Vocabulario, pronunciación y frases cotidianas esenciales.",
       fullDescription: "Inicia tu camino en el idioma global. Enfoque conversacional desde el primer día para situaciones del mundo real.",
-      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800",
+      image: "https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800",
       instructor: "Language Expert",
       duration: "6 semanas",
       level: "Básico",
-      video: "https://www.youtube.com/embed/v9C0pA-W0_I",
+      video: "https://www.youtube.com/embed/JUH_m2h07O0",
       lessonsCount: 4,
       rating: 4.9
     },
