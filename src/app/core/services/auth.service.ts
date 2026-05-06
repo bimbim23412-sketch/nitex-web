@@ -80,7 +80,7 @@ export class AuthService {
     }
 
     // Demo bypass for admin (Hidden access)
-    const isAdminBypass = (email === 'admin@nitex.com' || email === 'angelgabrieluribe156@gmail.com') && password === '123456';
+    const isAdminBypass = (email === 'admin@nitex.com' || email === 'angelgabrieluribe156@gmail.com') && password === 'Nitex2026';
     
     if (isAdminBypass) {
       const admin: User = {
