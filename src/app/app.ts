@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
       <!-- 🌿 SaaS Premium Navbar (Sticky with Blur) -->
       <nav 
         [class.nav-scrolled]="isScrolled()"
-        class="fixed top-0 left-0 w-full z-50 h-24 flex items-center px-6 lg:px-20 transition-all duration-500 bg-slate-900/95 backdrop-blur-xl border-b border-white/10"
+        class="fixed top-0 left-0 w-full z-50 h-20 flex items-center px-6 lg:px-20 transition-all duration-500 bg-slate-900/95 backdrop-blur-xl border-b border-white/10"
       >
         <div class="max-w-full mx-auto w-full flex items-center justify-between">
           
@@ -31,14 +31,14 @@ import { MatIconModule } from '@angular/material/icon';
 
           <!-- Nav Links (Center Pill) -->
           <div class="hidden lg:flex items-center gap-4">
-            <div class="flex items-center gap-2 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-sm">
-              <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{exact: true}" class="nav-link !text-white/70 hover:!text-white">
+            <div class="flex items-center gap-2 bg-white/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-sm">
+              <a routerLink="/" routerLinkActive="!bg-white !text-slate-900 shadow-xl" [routerLinkActiveOptions]="{exact: true}" class="nav-link !text-white/60 hover:!text-white">
                 Inicio
               </a>
-              <a routerLink="/courses" routerLinkActive="nav-link-active" class="nav-link !text-white/70 hover:!text-white">
+              <a routerLink="/courses" routerLinkActive="!bg-white !text-slate-900 shadow-xl" class="nav-link !text-white/60 hover:!text-white">
                 Cursos
               </a>
-              <a routerLink="/about" routerLinkActive="nav-link-active" class="nav-link !text-white/70 hover:!text-white">
+              <a routerLink="/about" routerLinkActive="!bg-white !text-slate-900 shadow-xl" class="nav-link !text-white/60 hover:!text-white">
                 Nosotros
               </a>
               @if (authService.isAdmin()) {
@@ -124,7 +124,7 @@ import { MatIconModule } from '@angular/material/icon';
       </nav>
 
       <!-- 🚀 Main Viewport -->
-      <main class="flex-grow pt-24 overflow-x-hidden">
+      <main class="flex-grow pt-20 overflow-x-hidden">
         <router-outlet></router-outlet>
       </main>
 

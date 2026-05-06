@@ -12,7 +12,7 @@ import { AuthService } from '../../core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div 
-      class="relative w-full min-h-[700px] lg:h-[850px] overflow-hidden bg-white"
+      class="relative w-full min-h-[600px] lg:h-[700px] overflow-hidden bg-white"
       (mouseenter)="stopAutoplay()"
       (mouseleave)="startAutoplay()"
       (touchstart)="onTouchStart($event)"
@@ -30,9 +30,9 @@ import { AuthService } from '../../core/services/auth.service';
           <div class="max-w-7xl mx-auto h-full px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
             
             <!-- Left Side Content -->
-            <div class="space-y-8 relative z-20 pt-20 lg:pt-0" [class.animate-slide-up]="currentSlide() === i" [class.opacity-0]="currentSlide() !== i">
+            <div class="space-y-6 relative z-20 pt-16 lg:pt-0" [class.animate-slide-up]="currentSlide() === i" [class.opacity-0]="currentSlide() !== i">
                
-               <h1 class="text-6xl lg:text-[100px] font-black text-text-title tracking-tighter leading-[0.9]">
+               <h1 class="text-5xl lg:text-7xl font-black text-text-title tracking-tighter leading-[1.1]">
                   Capacítate hoy, <br> transforma <span class="text-primary-500">tu futuro</span>
                </h1>
 
