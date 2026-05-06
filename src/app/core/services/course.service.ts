@@ -6,180 +6,200 @@ import { Course, LevelStructure, Lesson, Exam } from '../models/course.model';
 })
 export class CourseService {
 
-  private courses = signal<Course[]>([
-    {
-      id: '1',
-      title: "Secretaría Recepcionista y Servicio al Cliente",
-      category: "Administración",
-      shortDescription: "Atención al cliente, manejo de llamadas y organización de oficina profesional.",
-      fullDescription: "Domina las habilidades administrativas críticas. Aprenderás gestión de agenda, comunicación asertiva, protocolos de oficina y herramientas digitales de vanguardia.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800",
-      instructor: "Profesional administrativo",
-      duration: "4 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
-      lessonsCount: 4,
-      rating: 4.8,
-      featured: true
-    },
-    {
-      id: '2',
-      title: "Estilista en Belleza",
-      category: "Belleza",
-      shortDescription: "Corte, peinado y cuidado integral del cabello.",
-      fullDescription: "Formación completa en técnicas de estilismo profesional. Desde el corte básico hasta peinados de gala y tratamientos capilares avanzados.",
-      image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800",
-      instructor: "Master Stylist",
-      duration: "5 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/v9C0pA-W0_I",
-      lessonsCount: 4,
-      rating: 4.7
-    },
-    {
-      id: '3',
-      title: "Cajero Bancario Computarizado",
-      category: "Finanzas",
-      shortDescription: "Manejo de caja, sistemas bancarios y atención al cliente financiero.",
-      fullDescription: "Capacitación técnica para el sector bancario. Incluye manejo de efectivo, detección de billetes falsos y software bancario especializado.",
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
-      instructor: "Experto Financiero",
-      duration: "4 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/l59E-G_SbeY",
-      lessonsCount: 4,
-      rating: 4.9,
-      featured: true
-    },
-    {
-      id: '4',
-      title: "Uñas Acrílicas",
-      category: "Belleza",
-      shortDescription: "Técnicas de aplicación y diseño artístico de uñas.",
-      fullDescription: "Aprende el arte del esculpido y diseño. Desde manicura rusa hasta técnicas avanzadas de acrílico y Nail Art.",
-      image: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=800",
-      instructor: "Nail Artist Pro",
-      duration: "3 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/2-nFz4pW52k",
-      lessonsCount: 4,
-      rating: 4.6
-    },
-    {
-      id: '5',
-      title: "Auxiliar en Farmacia",
-      category: "Salud",
-      shortDescription: "Medicamentos, atención al cliente y control de inventario farmacéutico.",
-      fullDescription: "Conocimientos esenciales en farmacología básica, dispensación de medicamentos y gestión administrativa de farmacias.",
-      image: "https://images.unsplash.com/photo-1576602976047-174e57a47881?q=80&w=800",
-      instructor: "Farmacéutico Titulado",
-      duration: "5 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/0_R8fF_x8Xg",
-      lessonsCount: 4,
-      rating: 4.7
-    },
-    {
-      id: '6',
-      title: "Barbería Profesional",
-      category: "Belleza",
-      shortDescription: "Cortes modernos, degradados extremos y perfilado de barba.",
-      fullDescription: "Domina el arte de la barbería clásica y moderna. Fades, visagismo y técnicas de afeitado tradicional.",
-      image: "https://images.unsplash.com/photo-1599351473216-203be09638c6?q=80&w=800",
-      instructor: "Master Barber",
-      duration: "5 semanas",
-      level: "Intermedio",
-      video: "https://www.youtube.com/embed/H_W_2mPqQYk",
-      lessonsCount: 4,
-      rating: 4.8,
-      featured: true
-    },
-    {
-      id: '7',
-      title: "Auxiliar de Enfermería",
-      category: "Salud",
-      shortDescription: "Cuidados básicos, signos vitales y asistencia médica profesional.",
-      fullDescription: "Formación en el cuidado integral del paciente. Primeros auxilios, administración de cuidados y soporte médico básico.",
-      image: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=800",
-      instructor: "Enfermera Especialista",
-      duration: "6 semanas",
-      level: "Intermedio",
-      video: "https://www.youtube.com/embed/v9C0pA-W0_I",
-      lessonsCount: 4,
-      rating: 4.9
-    },
-    {
-      id: '8',
-      title: "Informática Básica",
-      category: "Tecnología",
-      shortDescription: "Uso de computadora, Microsoft Word, Excel e Internet.",
-      fullDescription: "Alfabetización digital completa. Aprende a dominar las herramientas de oficina más demandadas en el mundo laboral.",
-      image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=800",
-      instructor: "Ingeniero de Sistemas",
-      duration: "4 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
-      lessonsCount: 4,
-      rating: 4.7
-    },
-    {
-      id: '9',
-      title: "Estilismo en Cejas y Pestañas",
-      category: "Belleza",
-      shortDescription: "Diseño de cejas, lifting y extensiones de pestañas pelo a pelo.",
-      fullDescription: "Técnicas de embellecimiento de la mirada. Visagismo de cejas, laminado y aplicación profesional de pestañas.",
-      image: "https://images.unsplash.com/photo-1522337660859-02fbefce4ffc?q=80&w=800",
-      instructor: "Lash Artist Master",
-      duration: "3 semanas",
-      level: "Intermedio",
-      video: "https://www.youtube.com/embed/17S9MlyIe28",
-      lessonsCount: 4,
-      rating: 4.8
-    },
-    {
-      id: '10',
-      title: "Facial y Maquillaje",
-      category: "Belleza",
-      shortDescription: "Cuidado facial profundo y técnicas de maquillaje profesional.",
-      fullDescription: "Estética facial y arte del maquillaje. Preparación de piel, colorimetría y maquillajes para eventos sociales.",
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=800",
-      instructor: "Makeup Artist Elite",
-      duration: "4 semanas",
-      level: "Intermedio",
-      video: "https://www.youtube.com/embed/jfKfPfyJRdk",
-      lessonsCount: 4,
-      rating: 4.7
-    },
-    {
-      id: '11',
-      title: "Inglés Básico",
-      category: "Idiomas",
-      shortDescription: "Vocabulario, pronunciación y frases cotidianas esenciales.",
-      fullDescription: "Inicia tu camino en el idioma global. Enfoque conversacional desde el primer día para situaciones del mundo real.",
-      image: "https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800",
-      instructor: "Language Expert",
-      duration: "6 semanas",
-      level: "Básico",
-      video: "https://www.youtube.com/embed/JUH_m2h07O0",
-      lessonsCount: 4,
-      rating: 4.9
-    },
-    {
-      id: '12',
-      title: "Reparación y Mantenimiento de Celulares",
-      category: "Tecnología",
-      shortDescription: "Diagnóstico, reparación de hardware y herramientas técnicas.",
-      fullDescription: "Conviértete en técnico profesional. Micro-soldadura, cambio de componentes y optimización de dispositivos móviles.",
-      image: "https://images.unsplash.com/photo-1546051889-d832a7bd33a0?q=80&w=800",
-      instructor: "Técnico Especialista",
-      duration: "6 semanas",
-      level: "Intermedio",
-      video: "https://www.youtube.com/embed/zH09zN70KDM",
-      lessonsCount: 4,
-      rating: 4.8,
-      featured: true
+  private readonly COURSES_DB_KEY = 'nitex_courses_db';
+  private courses = signal<Course[]>([]);
+
+  constructor() {
+    this.loadCourses();
+  }
+
+  private loadCourses() {
+    const saved = localStorage.getItem(this.COURSES_DB_KEY);
+    if (saved) {
+      this.courses.set(JSON.parse(saved));
+    } else {
+      const defaultCourses: Course[] = [
+        {
+          id: '1',
+          title: "Secretaría Recepcionista y Servicio al Cliente",
+          category: "Administración",
+          shortDescription: "Atención al cliente, manejo de llamadas y organización de oficina profesional.",
+          fullDescription: "Domina las habilidades administrativas críticas. Aprenderás gestión de agenda, comunicación asertiva, protocolos de oficina y herramientas digitales de vanguardia.",
+          image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800",
+          instructor: "Profesional administrativo",
+          duration: "4 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+          lessonsCount: 4,
+          rating: 4.8,
+          featured: true
+        },
+        {
+          id: '2',
+          title: "Estilista en Belleza",
+          category: "Belleza",
+          shortDescription: "Corte, peinado y cuidado integral del cabello.",
+          fullDescription: "Formación completa en técnicas de estilismo profesional. Desde el corte básico hasta peinados de gala y tratamientos capilares avanzados.",
+          image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800",
+          instructor: "Master Stylist",
+          duration: "5 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/v9C0pA-W0_I",
+          lessonsCount: 4,
+          rating: 4.7
+        },
+        {
+          id: '3',
+          title: "Cajero Bancario Computarizado",
+          category: "Finanzas",
+          shortDescription: "Manejo de caja, sistemas bancarios y atención al cliente financiero.",
+          fullDescription: "Capacitación técnica para el sector bancario. Incluye manejo de efectivo, detección de billetes falsos y software bancario especializado.",
+          image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
+          instructor: "Experto Financiero",
+          duration: "4 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/l59E-G_SbeY",
+          lessonsCount: 4,
+          rating: 4.9,
+          featured: true
+        },
+        {
+          id: '4',
+          title: "Uñas Acrílicas",
+          category: "Belleza",
+          shortDescription: "Técnicas de aplicación y diseño artístico de uñas.",
+          fullDescription: "Aprende el arte del esculpido y diseño. Desde manicura rusa hasta técnicas avanzadas de acrílico y Nail Art.",
+          image: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=800",
+          instructor: "Nail Artist Pro",
+          duration: "3 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/2-nFz4pW52k",
+          lessonsCount: 4,
+          rating: 4.6
+        },
+        {
+          id: '5',
+          title: "Auxiliar en Farmacia",
+          category: "Salud",
+          shortDescription: "Medicamentos, atención al cliente y control de inventario farmacéutico.",
+          fullDescription: "Conocimientos esenciales en farmacología básica, dispensación de medicamentos y gestión administrativa de farmacias.",
+          image: "https://images.unsplash.com/photo-1576602976047-174e57a47881?q=80&w=800",
+          instructor: "Farmacéutico Titulado",
+          duration: "5 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/0_R8fF_x8Xg",
+          lessonsCount: 4,
+          rating: 4.7
+        },
+        {
+          id: '6',
+          title: "Barbería Profesional",
+          category: "Belleza",
+          shortDescription: "Cortes modernos, degradados extremos y perfilado de barba.",
+          fullDescription: "Domina el arte de la barbería clásica y moderna. Fades, visagismo y técnicas de afeitado tradicional.",
+          image: "https://images.unsplash.com/photo-1599351473216-203be09638c6?q=80&w=800",
+          instructor: "Master Barber",
+          duration: "5 semanas",
+          level: "Intermedio",
+          video: "https://www.youtube.com/embed/H_W_2mPqQYk",
+          lessonsCount: 4,
+          rating: 4.8,
+          featured: true
+        },
+        {
+          id: '7',
+          title: "Auxiliar de Enfermería",
+          category: "Salud",
+          shortDescription: "Cuidados básicos, signos vitales y asistencia médica profesional.",
+          fullDescription: "Formación en el cuidado integral del paciente. Primeros auxilios, administración de cuidados y soporte médico básico.",
+          image: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=800",
+          instructor: "Enfermera Especialista",
+          duration: "6 semanas",
+          level: "Intermedio",
+          video: "https://www.youtube.com/embed/v9C0pA-W0_I",
+          lessonsCount: 4,
+          rating: 4.9
+        },
+        {
+          id: '8',
+          title: "Informática Básica",
+          category: "Tecnología",
+          shortDescription: "Uso de computadora, Microsoft Word, Excel e Internet.",
+          fullDescription: "Alfabetización digital completa. Aprende a dominar las herramientas de oficina más demandadas en el mundo laboral.",
+          image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=800",
+          instructor: "Ingeniero de Sistemas",
+          duration: "4 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+          lessonsCount: 4,
+          rating: 4.7
+        },
+        {
+          id: '9',
+          title: "Estilismo en Cejas y Pestañas",
+          category: "Belleza",
+          shortDescription: "Diseño de cejas, lifting y extensiones de pestañas pelo a pelo.",
+          fullDescription: "Técnicas de embellecimiento de la mirada. Visagismo de cejas, laminado y aplicación profesional de pestañas.",
+          image: "https://images.unsplash.com/photo-1522337660859-02fbefce4ffc?q=80&w=800",
+          instructor: "Lash Artist Master",
+          duration: "3 semanas",
+          level: "Intermedio",
+          video: "https://www.youtube.com/embed/17S9MlyIe28",
+          lessonsCount: 4,
+          rating: 4.8
+        },
+        {
+          id: '10',
+          title: "Facial y Maquillaje",
+          category: "Belleza",
+          shortDescription: "Cuidado facial profundo y técnicas de maquillaje profesional.",
+          fullDescription: "Estética facial y arte del maquillaje. Preparación de piel, colorimetría y maquillajes para eventos sociales.",
+          image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=800",
+          instructor: "Makeup Artist Elite",
+          duration: "4 semanas",
+          level: "Intermedio",
+          video: "https://www.youtube.com/embed/jfKfPfyJRdk",
+          lessonsCount: 4,
+          rating: 4.7
+        },
+        {
+          id: '11',
+          title: "Inglés Básico",
+          category: "Idiomas",
+          shortDescription: "Vocabulario, pronunciación y frases cotidianas esenciales.",
+          fullDescription: "Inicia tu camino en el idioma global. Enfoque conversacional desde el primer día para situaciones del mundo real.",
+          image: "https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800",
+          instructor: "Language Expert",
+          duration: "6 semanas",
+          level: "Básico",
+          video: "https://www.youtube.com/embed/JUH_m2h07O0",
+          lessonsCount: 4,
+          rating: 4.9
+        },
+        {
+          id: '12',
+          title: "Reparación y Mantenimiento de Celulares",
+          category: "Tecnología",
+          shortDescription: "Diagnóstico, reparación de hardware y herramientas técnicas.",
+          fullDescription: "Conviértete en técnico profesional. Micro-soldadura, cambio de componentes y optimización de dispositivos móviles.",
+          image: "https://images.unsplash.com/photo-1546051889-d832a7bd33a0?q=80&w=800",
+          instructor: "Técnico Especialista",
+          duration: "6 semanas",
+          level: "Intermedio",
+          video: "https://www.youtube.com/embed/zH09zN70KDM",
+          lessonsCount: 4,
+          rating: 4.8,
+          featured: true
+        }
+      ];
+      this.courses.set(defaultCourses);
+      this.saveToStorage(defaultCourses);
     }
-  ]);
+  }
+
+  private saveToStorage(list: Course[]) {
+    localStorage.setItem(this.COURSES_DB_KEY, JSON.stringify(list));
+  }
 
   getAllCourses() {
     return this.courses;
@@ -196,7 +216,7 @@ export class CourseService {
     const levels = this.getCourseLevels(courseId);
     const totalLessons = levels.reduce((acc, lvl) => acc + lvl.lessons.length, 0);
     const completedCount = levels.reduce((acc, lvl) => {
-      return acc + lvl.lessons.filter(l => user.completedLessons?.includes(l.id)).length;
+      return acc + (lvl.lessons?.filter(l => user.completedLessons?.includes(l.id))?.length || 0);
     }, 0);
 
     if (totalLessons === 0) return 0;
@@ -345,15 +365,27 @@ export class CourseService {
   }
 
   addCourse(course: Course) {
-    this.courses.update(list => [...list, course]);
+    this.courses.update(list => {
+      const newList = [...list, course];
+      this.saveToStorage(newList);
+      return newList;
+    });
   }
 
   updateCourse(updatedCourse: Course) {
-    this.courses.update(list => list.map(c => c.id === updatedCourse.id ? updatedCourse : c));
+    this.courses.update(list => {
+      const newList = list.map(c => c.id === updatedCourse.id ? updatedCourse : c);
+      this.saveToStorage(newList);
+      return newList;
+    });
   }
 
   deleteCourse(id: string) {
-    this.courses.update(list => list.filter(c => c.id !== id));
+    this.courses.update(list => {
+      const newList = list.filter(c => c.id !== id);
+      this.saveToStorage(newList);
+      return newList;
+    });
   }
 
   private syncUserToDb(user: any) {

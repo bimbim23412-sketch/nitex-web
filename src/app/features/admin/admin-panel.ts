@@ -190,40 +190,74 @@ import { Router } from '@angular/router';
                </div>
              }
 
-             @if (activeView() === 'Exámenes') {
-               <div class="bg-white p-12 rounded-[64px] border border-slate-100 shadow-sm text-center">
-                 <mat-icon class="text-6xl text-slate-200 mb-6">quiz</mat-icon>
-                 <h2 class="text-3xl font-black text-text-title tracking-tighter uppercase italic">Módulo de Evaluación</h2>
-                 <p class="text-lg text-text-muted font-medium italic mt-2">Los exámenes se configuran desde la edición de cada curso.</p>
-               </div>
-             }
-
              @if (activeView() === 'Cursos') {
-               <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                  @for (course of allCourses(); track course.id) {
-                    <div class="bg-white p-10 rounded-[64px] border border-slate-100 shadow-sm hover:shadow-[0_64px_120px_-24px_rgba(0,0,0,0.1)] transition-all duration-700 group flex items-center justify-between relative overflow-hidden">
-                       <div class="flex items-center gap-8 min-w-0 relative z-10">
-                          <div class="w-24 h-24 rounded-[32px] overflow-hidden border border-slate-100 shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-500">
-                             <img [src]="course.image" class="w-full h-full object-cover">
-                          </div>
-                          <div class="min-w-0">
-                             <p class="text-[10px] text-primary-500 font-black uppercase tracking-[0.3em] mb-2 leading-none">{{ course.category }}</p>
-                             <p class="text-2xl font-black text-text-title tracking-tight italic truncate uppercase leading-tight">{{ course.title }}</p>
-                          </div>
-                       </div>
-                       <div class="flex gap-3 relative z-10">
-                          <button (click)="editCourse(course)" class="w-14 h-14 rounded-3xl bg-slate-50 text-slate-400 hover:bg-primary-500 hover:text-white transition-all duration-500 flex-center hover:scale-110 shadow-sm"><mat-icon class="scale-75">edit</mat-icon></button>
-                          <button (click)="deleteCourse(course)" class="w-14 h-14 rounded-3xl bg-slate-50 text-slate-400 hover:bg-rose-500 hover:text-white transition-all duration-500 flex-center hover:scale-110 shadow-sm"><mat-icon class="scale-75">delete</mat-icon></button>
-                       </div>
-                    </div>
-                  }
-                  <button (click)="createNewCourse()" class="p-12 rounded-[64px] border-4 border-dashed border-slate-100 text-slate-300 hover:border-primary-500/50 hover:text-primary-500 hover:bg-primary-50/20 transition-all duration-700 flex flex-col items-center justify-center gap-6 group">
-                     <div class="w-20 h-20 bg-slate-50 rounded-[32px] flex-center group-hover:bg-primary-500 group-hover:text-white group-hover:rotate-90 transition-all duration-700 shadow-sm group-hover:shadow-xl group-hover:shadow-primary-500/30">
-                        <mat-icon class="scale-[1.8]">add</mat-icon>
+                @if (editingCourse()) {
+                  <div class="bg-white p-12 lg:p-16 rounded-[64px] border border-slate-100 shadow-xl animate-fade-right space-y-12">
+                     <div class="flex items-center justify-between">
+                        <div class="space-y-2">
+                           <h2 class="text-3xl font-black text-text-title uppercase italic tracking-tighter">{{ editingCourse()?.id?.startsWith('new') ? 'Inyectar Nuevo Curso' : 'Refinar Activo Educativo' }}</h2>
+                           <p class="text-sm text-text-muted font-medium italic">Configura los metadatos y contenido del curso.</p>
+                        </div>
+                        <button (click)="editingCourse.set(null)" class="w-12 h-12 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-500 rounded-2xl flex-center transition-all">
+                           <mat-icon>close</mat-icon>
+                        </button>
                      </div>
-                     <span class="text-xs font-black uppercase tracking-[0.4em]">Inyectar Nuevo Activo Educativo</span>
-                  </button>
-               </div>
+
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="space-y-4">
+                           <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Título del Curso</label>
+                           <input [(ngModel)]="courseBuffer.title" class="w-full bg-slate-50 border border-slate-100 rounded-[24px] py-5 px-8 text-sm font-bold outline-none focus:border-primary-500/50 transition-all" placeholder="Ej: Barbería Avanzada">
+                        </div>
+                        <div class="space-y-4">
+                           <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Categoría</label>
+                           <input [(ngModel)]="courseBuffer.category" class="w-full bg-slate-50 border border-slate-100 rounded-[24px] py-5 px-8 text-sm font-bold outline-none focus:border-primary-500/50 transition-all" placeholder="Ej: Belleza">
+                        </div>
+                        <div class="space-y-4 md:col-span-2">
+                           <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Imagen de Portada (URL)</label>
+                           <input [(ngModel)]="courseBuffer.image" class="w-full bg-slate-50 border border-slate-100 rounded-[24px] py-5 px-8 text-sm font-bold outline-none focus:border-primary-500/50 transition-all" placeholder="https://...">
+                        </div>
+                        <div class="space-y-4 md:col-span-2">
+                           <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Descripción Breve</label>
+                           <textarea [(ngModel)]="courseBuffer.shortDescription" rows="3" class="w-full bg-slate-50 border border-slate-100 rounded-[32px] py-6 px-8 text-sm font-bold outline-none focus:border-primary-500/50 transition-all resize-none" placeholder="Resumen para la tarjeta..."></textarea>
+                        </div>
+                     </div>
+
+                     <div class="pt-8 border-t border-slate-50 flex gap-4">
+                        <button (click)="saveCourse()" class="flex-grow py-6 bg-slate-900 text-white rounded-[32px] text-xs font-black uppercase tracking-[0.2em] hover:bg-primary-500 transition-all shadow-xl shadow-slate-900/10">
+                           Guardar Cambios
+                        </button>
+                        <button (click)="editingCourse.set(null)" class="px-12 py-6 bg-slate-50 text-slate-400 rounded-[32px] text-xs font-black uppercase tracking-[0.2em] hover:bg-slate-100 transition-all">
+                           Cancelar
+                        </button>
+                     </div>
+                  </div>
+                } @else {
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                     @for (course of allCourses(); track course.id) {
+                        <div class="bg-white p-10 rounded-[64px] border border-slate-100 shadow-sm hover:shadow-[0_64px_120px_-24px_rgba(0,0,0,0.1)] transition-all duration-700 group flex items-center justify-between relative overflow-hidden">
+                           <div class="flex items-center gap-8 min-w-0 relative z-10">
+                              <div class="w-24 h-24 rounded-[32px] overflow-hidden border border-slate-100 shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-500">
+                                 <img [src]="course.image" class="w-full h-full object-cover">
+                              </div>
+                              <div class="min-w-0">
+                                 <p class="text-[10px] text-primary-500 font-black uppercase tracking-[0.3em] mb-2 leading-none">{{ course.category }}</p>
+                                 <p class="text-2xl font-black text-text-title tracking-tight italic truncate uppercase leading-tight">{{ course.title }}</p>
+                              </div>
+                           </div>
+                           <div class="flex gap-3 relative z-10">
+                              <button (click)="startEditCourse(course)" class="w-14 h-14 rounded-3xl bg-slate-50 text-slate-400 hover:bg-primary-500 hover:text-white transition-all duration-500 flex-center hover:scale-110 shadow-sm"><mat-icon class="scale-75">edit</mat-icon></button>
+                              <button (click)="deleteCourse(course)" class="w-14 h-14 rounded-3xl bg-slate-50 text-slate-400 hover:bg-rose-500 hover:text-white transition-all duration-500 flex-center hover:scale-110 shadow-sm"><mat-icon class="scale-75">delete</mat-icon></button>
+                           </div>
+                        </div>
+                     }
+                     <button (click)="createNewCourse()" class="p-12 rounded-[64px] border-4 border-dashed border-slate-100 text-slate-300 hover:border-primary-500/50 hover:text-primary-500 hover:bg-primary-50/20 transition-all duration-700 flex flex-col items-center justify-center gap-6 group">
+                        <div class="w-20 h-20 bg-slate-50 rounded-[32px] flex-center group-hover:bg-primary-500 group-hover:text-white group-hover:rotate-90 transition-all duration-700 shadow-sm group-hover:shadow-xl group-hover:shadow-primary-500/30">
+                           <mat-icon class="scale-[1.8]">add</mat-icon>
+                        </div>
+                        <span class="text-xs font-black uppercase tracking-[0.4em]">Inyectar Nuevo Activo Educativo</span>
+                     </button>
+                  </div>
+                }
              }
 
              @if (activeView() === 'Auditoría') {
@@ -275,7 +309,6 @@ export class AdminPanel {
     { label: 'Dashboard', icon: 'dashboard', view: 'Dashboard' },
     { label: 'Cursos', icon: 'school', view: 'Cursos' },
     { label: 'Usuarios', icon: 'people', view: 'Usuarios' },
-    { label: 'Exámenes', icon: 'quiz', view: 'Exámenes' },
     { label: 'Certificados', icon: 'workspace_premium', view: 'Certificados' },
     { label: 'Auditoría', icon: 'history', view: 'Auditoría' }
   ];
@@ -332,44 +365,51 @@ export class AdminPanel {
     }
   }
 
+  courseBuffer: Partial<Course> = {};
+
   createNewCourse() {
-    const title = prompt('Título del nuevo curso:');
-    if (title) {
-       const newCourse: Course = {
-          id: 'new-' + Date.now(),
-          title,
-          category: 'General',
-          shortDescription: 'Descripción corta.',
-          fullDescription: 'Descripción completa.',
-          image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800',
-          level: 'Básico',
-          duration: '10h',
-          lessonsCount: 3,
-          rating: 5.0,
-          instructor: 'Admin Instructor',
-          video: 'https://www.youtube.com/embed/jfKfPfyJRdk'
-       };
-       this.courseService.addCourse(newCourse);
-    }
+    this.courseBuffer = {
+      id: 'new-' + Date.now(),
+      title: '',
+      category: '',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800',
+      shortDescription: '',
+      fullDescription: 'Descripción completa del programa.',
+      instructor: 'Instructor Nitex',
+      duration: '4 semanas',
+      level: 'Básico',
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      lessonsCount: 4,
+      rating: 5.0
+    };
+    this.editingCourse.set(this.courseBuffer as Course);
   }
 
-  editCourse(course: Course) {
-    const newTitle = prompt('Nuevo título para el curso:', course.title);
-    if (newTitle === null) return;
-    
-    const newImg = prompt('URL de la nueva imagen de portada:', course.image);
-    if (newImg === null) return;
+  startEditCourse(course: Course) {
+    this.courseBuffer = { ...course };
+    this.editingCourse.set(course);
+  }
 
-    this.courseService.updateCourse({ 
-      ...course, 
-      title: newTitle || course.title,
-      image: newImg || course.image
-    });
+  saveCourse() {
+    if (!this.courseBuffer.title || !this.courseBuffer.category) {
+      alert('Título y Categoría son obligatorios');
+      return;
+    }
+
+    if (this.courseBuffer.id?.startsWith('new')) {
+      this.courseService.addCourse(this.courseBuffer as Course);
+    } else {
+      this.courseService.updateCourse(this.courseBuffer as Course);
+    }
+    
+    this.editingCourse.set(null);
+    this.refreshData();
   }
 
   deleteCourse(course: Course) {
     if (confirm(`¿Eliminar ${course.title} permanentemente?`)) {
       this.courseService.deleteCourse(course.id);
+      this.refreshData();
     }
   }
 

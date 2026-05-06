@@ -61,39 +61,88 @@ import { Course } from '../../core/models/course.model';
 
           <!-- 📚 Mis Cursos -->
           @if (activeView() === 'courses') {
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-up">
-               @if (myCourses().length > 0) {
-                 @for (course of myCourses(); track course.id) {
-                    <div class="bg-white rounded-[48px] p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden flex flex-col">
-                       <div class="flex items-center gap-6 mb-8">
-                          <div class="w-20 h-20 rounded-3xl overflow-hidden border border-slate-100 shrink-0">
-                             <img [src]="course.image" class="w-full h-full object-cover">
-                          </div>
-                          <div class="min-w-0">
-                             <h3 class="text-xl font-black text-text-title tracking-tight italic uppercase truncate leading-none mb-3">{{ course.title }}</h3>
-                             <p class="text-[10px] text-primary-500 font-black uppercase tracking-widest">{{ course.category }}</p>
-                          </div>
-                       </div>
-                       
-                       <div class="space-y-3 mb-8">
-                          <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                             <span>Progreso</span>
-                             <span>{{ getProgress(course.id) }}%</span>
-                          </div>
-                          <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                             <div [style.width.%]="getProgress(course.id)" class="h-full bg-primary-500 transition-all duration-1000"></div>
-                          </div>
-                       </div>
-
-                       <div class="mt-auto">
-                          <button [routerLink]="['/learning', course.id]" class="w-full py-5 bg-slate-900 text-white rounded-[24px] text-[10px] font-black uppercase tracking-widest group-hover:bg-primary-500 transition-all">
-                             Continuar Formación
-                          </button>
-                       </div>
+            <div class="space-y-16 animate-fade-up">
+               
+               <!-- ⏳ En Progreso -->
+               @if (myCourses().length > completedCourses().length) {
+                 <section class="space-y-8">
+                    <div class="flex items-center gap-4">
+                       <div class="w-1.5 h-6 bg-primary-500 rounded-full"></div>
+                       <h2 class="text-2xl font-black text-text-title uppercase italic tracking-tighter">Formación en Curso</h2>
                     </div>
-                 }
-               } @else {
-                  <div class="col-span-full py-40 bg-white rounded-[64px] border border-slate-50 text-center space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       @for (course of myCourses(); track course.id) {
+                          @if (getProgress(course.id) < 100) {
+                             <div class="bg-white rounded-[48px] p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden flex flex-col">
+                                <div class="flex items-center gap-6 mb-8">
+                                   <div class="w-20 h-20 rounded-3xl overflow-hidden border border-slate-100 shrink-0">
+                                      <img [src]="course.image" class="w-full h-full object-cover">
+                                   </div>
+                                   <div class="min-w-0">
+                                      <h3 class="text-xl font-black text-text-title tracking-tight italic uppercase truncate leading-none mb-3">{{ course.title }}</h3>
+                                      <p class="text-[10px] text-primary-500 font-black uppercase tracking-widest">{{ course.category }}</p>
+                                   </div>
+                                </div>
+                                <div class="space-y-3 mb-8">
+                                   <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                      <span>Progreso</span>
+                                      <span>{{ getProgress(course.id) }}%</span>
+                                   </div>
+                                   <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                      <div [style.width.%]="getProgress(course.id)" class="h-full bg-primary-500 transition-all duration-1000"></div>
+                                   </div>
+                                </div>
+                                <div class="mt-auto">
+                                   <button [routerLink]="['/learning', course.id]" class="w-full py-5 bg-slate-900 text-white rounded-[24px] text-[10px] font-black uppercase tracking-widest group-hover:bg-primary-500 transition-all">
+                                      Continuar Formación
+                                   </button>
+                                </div>
+                             </div>
+                          }
+                       }
+                    </div>
+                 </section>
+               }
+
+               <!-- ✅ Finalizados -->
+               @if (completedCourses().length > 0) {
+                 <section class="space-y-8">
+                    <div class="flex items-center gap-4">
+                       <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                       <h2 class="text-2xl font-black text-text-title uppercase italic tracking-tighter">Cursos Finalizados</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       @for (course of completedCourses(); track course.id) {
+                          <div class="bg-slate-900 rounded-[48px] p-8 border border-white/5 shadow-2xl group relative overflow-hidden flex flex-col text-white">
+                             <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                             <div class="flex items-center gap-6 mb-8 relative z-10">
+                                <div class="w-20 h-20 rounded-3xl overflow-hidden border border-white/10 shrink-0">
+                                   <img [src]="course.image" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                                </div>
+                                <div class="min-w-0">
+                                   <h3 class="text-xl font-black text-white tracking-tight italic uppercase truncate leading-none mb-3">{{ course.title }}</h3>
+                                   <div class="flex items-center gap-2">
+                                      <mat-icon class="text-emerald-500 scale-75">verified</mat-icon>
+                                      <p class="text-[10px] text-emerald-500 font-black uppercase tracking-widest">Completado</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="mt-auto flex gap-3 relative z-10">
+                                <button [routerLink]="['/learning', course.id]" class="flex-grow py-5 bg-white/10 text-white rounded-[24px] text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all">
+                                   Repasar Contenido
+                                </button>
+                                <button (click)="activeView.set('certificates')" class="px-6 py-5 bg-emerald-500 text-white rounded-[24px] hover:scale-105 transition-all shadow-lg shadow-emerald-500/20">
+                                   <mat-icon class="scale-90">workspace_premium</mat-icon>
+                                </button>
+                             </div>
+                          </div>
+                       }
+                    </div>
+                 </section>
+               }
+
+               @if (myCourses().length === 0) {
+                  <div class="py-40 bg-white rounded-[64px] border border-slate-50 text-center space-y-8">
                      <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-200">
                         <mat-icon class="scale-150">school</mat-icon>
                      </div>
@@ -272,6 +321,10 @@ export class ProfileDashboard implements OnInit {
 
   myCourses = computed(() => {
     return this.courseService.getAllCourses()().filter(c => this.user()?.enrolledCourses.includes(c.id));
+  });
+
+  completedCourses = computed(() => {
+    return this.myCourses().filter(c => this.getProgress(c.id) === 100);
   });
 
   certificates = computed(() => {
