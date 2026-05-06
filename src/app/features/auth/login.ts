@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,20 @@ import { MatIconModule } from '@angular/material/icon';
       <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-primary-100/30 rounded-full blur-[100px] animate-pulse delay-1000"></div>
 
       <div class="w-full max-w-lg relative z-10 animate-fade-up">
+        
+        <!-- 💎 Success Alert (Post Reset) -->
+        @if (resetSuccess()) {
+          <div class="mb-6 p-6 bg-cyan-500 rounded-[32px] shadow-xl shadow-cyan-500/20 text-white flex items-center gap-6 animate-fade-down">
+             <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                <mat-icon>check_circle</mat-icon>
+             </div>
+             <div>
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">¡Todo listo!</p>
+                <p class="text-xs font-bold">Contraseña actualizada. Ya puedes iniciar sesión.</p>
+             </div>
+          </div>
+        }
+
         <!-- 💎 Glassmorphism Card -->
         <div class="bg-white/70 backdrop-blur-3xl rounded-[48px] p-8 lg:p-12 shadow-[0_64px_120px_-24px_rgba(0,0,0,0.1)] border border-white relative overflow-hidden">
           
@@ -133,24 +147,32 @@ import { MatIconModule } from '@angular/material/icon';
     </div>
   `,
 })
-export class Login {
+export class Login implements OnInit {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(8)]]
   });
 
   isLoading = signal(false);
+  resetSuccess = signal(false);
   errorMsg = signal('');
   showPassword = signal(false);
   showRecovery = signal(false);
   lockoutRemaining = signal(0);
   private timer: any;
 
-
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['reset'] === 'success') {
+        this.resetSuccess.set(true);
+      }
+    });
+  }
 
   onSubmit() {
     if (this.loginForm.invalid) return;

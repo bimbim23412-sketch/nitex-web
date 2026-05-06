@@ -130,38 +130,77 @@ export class AuthService {
   }
 
   // Recovery Methods
+  private recoveryAttempts = signal(0);
+  private readonly MAX_RECOVERY_ATTEMPTS = 5;
+
   sendRecoveryCode(email: string): { success: boolean, message: string } {
     const users: User[] = JSON.parse(localStorage.getItem('nitex_users_db') || '[]');
-    if (!users.find(u => u.email === email)) {
-      return { success: false, message: 'El correo electrónico no existe.' };
+    const user = users.find(u => u.email === email);
+    if (!user) {
+      return { success: false, message: 'El correo electrónico no existe en nuestra base de datos.' };
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     this.recoveryCode.set(code);
     this.recoveryEmail.set(email);
     this.recoveryExpiry.set(Date.now() + 10 * 60 * 1000); // 10 minutes
+    this.recoveryAttempts.set(0);
 
-    console.log(`[RECOVERY] Código enviado a ${email}: ${code}`);
-    return { success: true, message: 'Se ha enviado un código a tu correo' };
+    // Simulated professional email sending
+    console.log(`
+      -----------------------------------------
+      DE: NITEX <no-reply@nitex.com>
+      PARA: ${email}
+      ASUNTO: Tu código de verificación NITEX
+      
+      Hola ${user.name},
+      Tu código de verificación es: ${code}
+      
+      Este código expirará en 10 minutos. Por seguridad, 
+      no compartas este código con nadie.
+      -----------------------------------------
+    `);
+    
+    this.logAuditEvent(email, 'RECOVERY_CODE_SENT', `Código generado: ${code}`);
+    return { success: true, message: 'Se ha enviado un código de seguridad a tu correo.' };
   }
 
-  verifyRecoveryCode(code: string): boolean {
-    if (this.recoveryCode() === code && Date.now() < (this.recoveryExpiry() || 0)) {
-      return true;
+  verifyRecoveryCode(code: string): { success: boolean, message?: string } {
+    if (Date.now() > (this.recoveryExpiry() || 0)) {
+      return { success: false, message: 'El código ha expirado. Solicita uno nuevo.' };
     }
-    return false;
+
+    if (this.recoveryAttempts() >= this.MAX_RECOVERY_ATTEMPTS) {
+      return { success: false, message: 'Demasiados intentos fallidos. Reinicia el proceso.' };
+    }
+
+    if (this.recoveryCode() === code) {
+      this.recoveryAttempts.set(0);
+      return { success: true };
+    } else {
+      this.recoveryAttempts.update(n => n + 1);
+      return { success: false, message: `Código incorrecto. Intentos restantes: ${this.MAX_RECOVERY_ATTEMPTS - this.recoveryAttempts()}` };
+    }
   }
 
   resetPassword(newPassword: string): boolean {
-    if (!this.recoveryEmail()) return false;
+    const email = this.recoveryEmail();
+    if (!email) return false;
     
     const users: User[] = JSON.parse(localStorage.getItem('nitex_users_db') || '[]');
-    const idx = users.findIndex(u => u.email === this.recoveryEmail());
+    const idx = users.findIndex(u => u.email === email);
+    
     if (idx !== -1) {
-      // In real app we'd hash and store. For demo we just reset the security state
+      users[idx].password = newPassword;
+      localStorage.setItem('nitex_users_db', JSON.stringify(users));
+      
+      this.logAuditEvent(email, 'PASSWORD_RESET_SUCCESS', 'Contraseña restablecida exitosamente');
+      
+      // Cleanup
       this.resetSecurityState();
       this.recoveryCode.set(null);
       this.recoveryEmail.set(null);
+      this.recoveryExpiry.set(null);
       return true;
     }
     return false;
