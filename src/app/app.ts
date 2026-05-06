@@ -17,28 +17,28 @@ import { MatIconModule } from '@angular/material/icon';
       <!-- 🌿 SaaS Premium Navbar (Sticky with Blur) -->
       <nav 
         [class.nav-scrolled]="isScrolled()"
-        class="fixed top-0 left-0 w-full z-50 h-24 flex items-center px-6 lg:px-20 transition-all duration-500 bg-primary-50/80 backdrop-blur-xl border-b border-primary-100/50"
+        class="fixed top-0 left-0 w-full z-50 h-24 flex items-center px-6 lg:px-20 transition-all duration-500 bg-slate-900/95 backdrop-blur-xl border-b border-white/10"
       >
         <div class="max-w-full mx-auto w-full flex items-center justify-between">
           
           <!-- Logo -->
-          <a routerLink="/" class="flex items-center gap-3 group cursor-pointer">
+          <a routerLink="/" class="flex items-center gap-3 group cursor-pointer text-white">
             <div class="w-12 h-12 bg-primary-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary-500/20 group-hover:rotate-12 transition-transform duration-500">
               <mat-icon class="scale-110">rocket_launch</mat-icon>
             </div>
-            <span class="text-2xl font-black text-text-title tracking-tighter uppercase italic">Nitex</span>
+            <span class="text-2xl font-black tracking-tighter uppercase italic">Nitex</span>
           </a>
 
           <!-- Nav Links (Center Pill) -->
           <div class="hidden lg:flex items-center gap-4">
-            <div class="flex items-center gap-2 bg-white/60 backdrop-blur-md p-2 rounded-full border border-slate-100 shadow-sm">
-              <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+            <div class="flex items-center gap-2 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-sm">
+              <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{exact: true}" class="nav-link !text-white/70 hover:!text-white">
                 Inicio
               </a>
-              <a routerLink="/courses" routerLinkActive="nav-link-active" class="nav-link">
+              <a routerLink="/courses" routerLinkActive="nav-link-active" class="nav-link !text-white/70 hover:!text-white">
                 Cursos
               </a>
-              <a routerLink="/about" routerLinkActive="nav-link-active" class="nav-link">
+              <a routerLink="/about" routerLinkActive="nav-link-active" class="nav-link !text-white/70 hover:!text-white">
                 Nosotros
               </a>
               @if (authService.isAdmin()) {
@@ -50,11 +50,11 @@ import { MatIconModule } from '@angular/material/icon';
 
             <!-- 🔍 Quick Search -->
             <div class="relative group hidden xl:block">
-              <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 scale-75 group-focus-within:text-primary-500 transition-colors">search</mat-icon>
+              <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 scale-75 group-focus-within:text-primary-500 transition-colors">search</mat-icon>
               <input 
                 type="text" 
                 placeholder="Buscar cursos..." 
-                class="w-64 bg-white/50 border border-slate-100 rounded-full py-3 pl-12 pr-6 text-xs font-bold focus:bg-white focus:border-primary-500 transition-all outline-none"
+                class="w-64 bg-white/5 border border-white/10 rounded-full py-3 pl-12 pr-6 text-xs font-bold text-white focus:bg-white/10 focus:border-primary-500 transition-all outline-none"
               >
             </div>
           </div>
@@ -66,7 +66,7 @@ import { MatIconModule } from '@angular/material/icon';
               <div class="relative">
                 <button 
                   (click)="isMenuOpen.set(!isMenuOpen())"
-                  class="flex items-center gap-4 p-2 pr-5 bg-white/80 backdrop-blur-sm rounded-full border border-slate-100 shadow-sm hover:shadow-md transition-all group"
+                  class="flex items-center gap-4 p-2 pr-5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-sm hover:shadow-md transition-all group"
                 >
                   <div class="relative shrink-0">
                     <div class="w-11 h-11 rounded-full p-1 bg-gradient-to-tr from-primary-500 to-primary-100 overflow-hidden shadow-sm flex items-center justify-center">
@@ -79,13 +79,13 @@ import { MatIconModule } from '@angular/material/icon';
                       }
                     </div>
                     <!-- Activo Indicator (Cyan) -->
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-primary-500 border-2 border-white rounded-full"></span>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-primary-500 border-2 border-slate-900 rounded-full"></span>
                   </div>
                   <div class="text-left hidden lg:block mr-2">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-primary-600 leading-none mb-1">Activo</p>
-                    <p class="text-sm font-bold text-text-title leading-none truncate max-w-[120px]">{{ user()?.name }}</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-primary-400 leading-none mb-1">Activo</p>
+                    <p class="text-sm font-bold text-white leading-none truncate max-w-[120px]">{{ user()?.name }}</p>
                   </div>
-                  <mat-icon class="text-slate-400 group-hover:text-primary-500 transition-colors">expand_more</mat-icon>
+                  <mat-icon class="text-white/40 group-hover:text-primary-500 transition-colors">expand_more</mat-icon>
                 </button>
 
                 <!-- 📂 Dropdown Menu -->

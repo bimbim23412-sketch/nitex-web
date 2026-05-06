@@ -28,7 +28,7 @@ import { AuthService } from '../../core/services/auth.service';
           <div class="max-w-7xl mx-auto h-full px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
             
             <!-- Left Side Content -->
-            <div class="space-y-10 animate-slide-up relative z-20 pt-20 lg:pt-0">
+            <div class="space-y-8 relative z-20 pt-20 lg:pt-0" [class.animate-slide-up]="currentSlide() === i" [class.opacity-0]="currentSlide() !== i">
                
                <h1 class="text-6xl lg:text-[100px] font-black text-text-title tracking-tighter leading-[0.9]">
                   Capacítate hoy, <br> transforma <span class="text-primary-500">tu futuro</span>
@@ -72,7 +72,7 @@ import { AuthService } from '../../core/services/auth.service';
                   <!-- Main Student Image -->
                   <div class="w-[350px] lg:w-[550px] relative z-10">
                      <img 
-                       [src]="i % 2 === 0 ? 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200' : 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200'" 
+                       [src]="course.image" 
                        class="w-full h-auto rounded-[80px] shadow-2xl relative z-10" 
                        [alt]="course.title"
                      >
