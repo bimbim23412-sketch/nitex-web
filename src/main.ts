@@ -2,8 +2,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
 import { appConfig } from './app/app.config';
 
-// 🚀 NITEX FINAL BUILD - SIN ANIMATIONS (PRODUCCIÓN)
-console.log("NITEX FINAL STABLE BUILD - DEPLOY READY");
+// 🚀 NITEX BUILD V2 - SIN SSR (LIMPIEZA TOTAL PARA RENDER)
+console.log("NITEX STABLE BUILD V2 - READY");
 
 bootstrapApplication(App, appConfig)
     .then(() => {
