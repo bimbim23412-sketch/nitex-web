@@ -32,13 +32,13 @@ import { MatIconModule } from '@angular/material/icon';
           <!-- Nav Links (Center Pill - Desktop) -->
           <div class="hidden lg:flex items-center gap-4">
             <div class="flex items-center gap-2 bg-white/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-sm">
-              <a routerLink="/" routerLinkActive="!bg-white !text-slate-900 shadow-xl" [routerLinkActiveOptions]="{exact: true}" class="nav-link !text-white/60 hover:!text-white">
+              <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
                 Inicio
               </a>
-              <a routerLink="/courses" routerLinkActive="!bg-white !text-slate-900 shadow-xl" class="nav-link !text-white/60 hover:!text-white">
+              <a routerLink="/courses" routerLinkActive="nav-link-active" class="nav-link">
                 Cursos
               </a>
-              <a routerLink="/about" routerLinkActive="!bg-white !text-slate-900 shadow-xl" class="nav-link !text-white/60 hover:!text-white">
+              <a routerLink="/about" routerLinkActive="nav-link-active" class="nav-link">
                 Nosotros
               </a>
             </div>
@@ -48,11 +48,11 @@ import { MatIconModule } from '@angular/material/icon';
           <div class="flex items-center gap-4 lg:gap-6">
             <!-- 🔍 Desktop Search -->
             <div class="relative group hidden xl:block">
-              <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 scale-75 group-focus-within:text-primary-500 transition-colors">search</mat-icon>
+              <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 scale-75 group-focus-within:text-cyan-400 transition-colors">search</mat-icon>
               <input 
                 type="text" 
                 placeholder="Buscar cursos..." 
-                class="w-48 bg-white/5 border border-white/10 rounded-full py-2.5 pl-10 pr-4 text-[11px] font-bold text-white focus:bg-white/10 focus:border-primary-500 transition-all outline-none"
+                class="w-48 bg-white/5 border border-white/5 rounded-full py-2.5 pl-10 pr-4 text-[11px] font-bold text-white/80 focus:bg-white/10 focus:border-cyan-500/50 transition-all outline-none placeholder:text-white/20"
               >
             </div>
 
@@ -60,24 +60,24 @@ import { MatIconModule } from '@angular/material/icon';
               <div class="relative">
                 <button 
                   (click)="isMenuOpen.set(!isMenuOpen())"
-                  class="flex items-center gap-3 lg:gap-4 p-1.5 lg:p-2 pr-4 lg:pr-5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-sm hover:shadow-md transition-all group"
+                  class="flex items-center gap-3 lg:gap-4 p-1.5 lg:p-2 pr-4 lg:pr-5 bg-white/5 backdrop-blur-sm rounded-full border border-white/5 hover:border-cyan-500/30 hover:bg-white/10 transition-all group"
                 >
                   <div class="relative shrink-0">
-                    <div class="w-9 h-9 lg:w-11 lg:h-11 rounded-full p-1 bg-gradient-to-tr from-primary-500 to-primary-100 overflow-hidden shadow-sm flex items-center justify-center">
+                    <div class="w-9 h-9 lg:w-11 lg:h-11 rounded-full p-1 bg-gradient-to-tr from-cyan-500 to-blue-500 overflow-hidden shadow-sm flex items-center justify-center">
                       @if (user()?.avatar) {
-                        <img [src]="user()?.avatar" class="w-full h-full object-cover rounded-full bg-white">
+                        <img [src]="user()?.avatar" class="w-full h-full object-cover rounded-full bg-slate-900">
                       } @else {
-                        <div class="w-full h-full rounded-full bg-white flex items-center justify-center text-primary-600 font-black text-xs lg:text-sm">
+                        <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan-400 font-black text-xs lg:text-sm">
                           {{ user()?.name?.charAt(0) | uppercase }}
                         </div>
                       }
                     </div>
                   </div>
                   <div class="text-left hidden md:block mr-1 lg:mr-2">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-primary-400 leading-none mb-1">Activo</p>
-                    <p class="text-xs lg:text-sm font-bold text-white leading-none truncate max-w-[100px] lg:max-w-[120px]">{{ user()?.name }}</p>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-cyan-500/60 leading-none mb-1">Activo</p>
+                    <p class="text-xs lg:text-sm font-bold text-white/90 leading-none truncate max-w-[100px] lg:max-w-[120px]">{{ user()?.name }}</p>
                   </div>
-                  <mat-icon class="text-white/40 group-hover:text-primary-500 transition-colors scale-90 lg:scale-100">expand_more</mat-icon>
+                  <mat-icon class="text-white/20 group-hover:text-cyan-400 transition-colors scale-90 lg:scale-100">expand_more</mat-icon>
                 </button>
 
                 @if (isMenuOpen()) {
@@ -244,23 +244,49 @@ import { MatIconModule } from '@angular/material/icon';
   styles: [`
     :host { display: block; }
     .nav-scrolled {
-      box-shadow: 0 20px 40px -15px rgba(6, 182, 212, 0.15);
-      background-color: rgba(255, 255, 255, 0.95);
-      border-color: transparent;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      background-color: rgba(15, 23, 42, 0.98); /* Mantener oscuro */
+      border-color: rgba(255, 255, 255, 0.05);
     }
     .nav-link { 
       font-size: 13px;
       font-weight: 800;
-      color: #64748b;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 0.75rem 1.5rem;
-      border-radius: 9999px; /* full rounded */
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      position: relative;
+      background: transparent !important;
     }
-    .nav-link:hover { color: var(--color-primary-500); background-color: var(--color-primary-50); }
-    .nav-link-active { color: var(--color-primary-600); background-color: var(--color-primary-50); }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #06b6d4; /* Cian suave */
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .nav-link:hover { 
+      color: #06b6d4 !important; 
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+    .nav-link:hover::after {
+      width: 20px;
+    }
+    .nav-link-active { 
+      color: #22d3ee !important; 
+    }
+    .nav-link-active::after {
+      width: 24px;
+      background: #22d3ee;
+    }
     .dropdown-item {
       display: flex;
       align-items: center;
@@ -277,8 +303,8 @@ import { MatIconModule } from '@angular/material/icon';
       margin: 0 0.5rem;
     }
     .dropdown-item:hover {
-      background-color: var(--color-primary-50);
-      color: var(--color-primary-500);
+      background-color: rgba(6, 182, 212, 0.05);
+      color: #06b6d4;
     }
     .dropdown-item mat-icon { 
       transform: scale(0.75);

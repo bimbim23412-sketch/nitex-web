@@ -95,28 +95,7 @@
   @apply text-[10px] font-bold text-rose-500 uppercase tracking-widest ml-4 mt-2 block;
 }
 
-/* Navbar Scroll Effect */
-.nav-scrolled {
-  @apply bg-white/95 border-b border-primary-100 shadow-[0_4px_20px_rgba(15,23,42,0.05)] py-3;
-}
-
-/* Scroll Reveal Backgrounds */
-.scroll-reveal {
-  @apply transition-all duration-1000 ease-in-out;
-}
-
-.nav-scrolled ~ main .scroll-reveal-bg {
-  @apply bg-primary-50/40;
-}
-
-/* Nav Links */
-.nav-link {
-  @apply text-sm font-semibold text-text-body/80 hover:text-accent-blue transition-all relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl hover:bg-primary-50/50;
-}
-
-.nav-link-active {
-  @apply text-accent-blue bg-primary-50/80;
-}
+/* Removed legacy navbar styles to allow app.ts to control the premium dark theme */
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
