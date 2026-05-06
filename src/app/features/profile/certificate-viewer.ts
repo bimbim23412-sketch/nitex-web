@@ -29,6 +29,14 @@ import { MatIconModule } from '@angular/material/icon';
          <div class="absolute inset-0 border-[2px] border-slate-200 m-8"></div>
          <div class="absolute top-0 right-0 w-96 h-96 bg-primary-500/5 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
          <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-500/5 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
+
+         <!-- 📱 Functional QR Code (Top Right) -->
+         <div class="absolute top-16 right-16 flex flex-col items-center gap-3 z-30">
+            <div class="p-3 bg-white border border-slate-100 rounded-3xl shadow-sm">
+               <img [src]="qrUrl()" class="w-24 h-24 object-contain">
+            </div>
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">{{ certificate()?.qrCode }}</p>
+         </div>
          
          <div class="relative z-10 h-full flex flex-col items-center justify-between p-24 lg:p-40 text-center">
             
@@ -59,13 +67,13 @@ import { MatIconModule } from '@angular/material/icon';
                <div class="max-w-2xl mx-auto">
                   <p class="text-xl text-text-muted font-medium italic leading-relaxed">
                      Por haber completado satisfactoriamente el programa de formación técnica de alto nivel en
-                     <span class="text-text-title font-black uppercase not-italic">"{{ certificate()?.courseName }}"</span>
+                     <span class="text-text-title font-black uppercase not-italic">"{{ certificate()?.courseName || 'Programa de Especialización Nitex' }}"</span>
                      cumpliendo con todos los estándares académicos y técnicos exigidos por nuestra currícula institucional.
                   </p>
                </div>
             </div>
 
-            <!-- Footer / QR -->
+            <!-- Footer -->
             <div class="w-full flex items-end justify-between pt-20">
                <div class="text-left space-y-4">
                   <div class="w-48 border-b border-slate-300"></div>
@@ -73,13 +81,6 @@ import { MatIconModule } from '@angular/material/icon';
                      <p class="text-lg font-black text-text-title uppercase italic leading-none">Director Académico</p>
                      <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Nitex Educational Group</p>
                   </div>
-               </div>
-
-               <div class="flex flex-col items-center gap-4">
-                  <div class="p-3 bg-white border border-slate-100 rounded-3xl shadow-sm">
-                     <img [src]="qrUrl()" class="w-28 h-28 object-contain">
-                  </div>
-                  <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ certificate()?.qrCode }}</p>
                </div>
 
                <div class="text-right space-y-4">
@@ -122,7 +123,7 @@ export class CertificateViewer implements OnInit {
     if (!cert) return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NITEX-VALID';
     
     // Codificamos información real para que al escanear salga algo útil
-    const verifyData = `NITEX ACADEMY\nCertificado: ${cert.id}\nAlumno: ${this.user()?.name}\nCurso: ${cert.courseName}\nFecha: ${new Date(cert.date).toLocaleDateString()}`;
+    const verifyData = `NITEX ACADEMY\nCertificado: ${cert.id}\nAlumno: ${this.user()?.name}\nCurso: ${cert.courseName || 'Programa Nitex'}\nFecha: ${new Date(cert.date).toLocaleDateString()}`;
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(verifyData)}`;
   });
 

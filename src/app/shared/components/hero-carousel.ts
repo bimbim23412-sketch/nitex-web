@@ -24,6 +24,8 @@ import { AuthService } from '../../core/services/auth.service';
           class="absolute inset-0 transition-all duration-1000 ease-in-out"
           [class.opacity-100.z-10]="currentSlide() === i"
           [class.opacity-0.z-0]="currentSlide() !== i"
+          [class.pointer-events-none]="currentSlide() !== i"
+          [style.visibility]="currentSlide() === i ? 'visible' : 'hidden'"
         >
           <div class="max-w-7xl mx-auto h-full px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
             
