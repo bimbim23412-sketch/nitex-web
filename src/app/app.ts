@@ -81,22 +81,22 @@ import { MatIconModule } from '@angular/material/icon';
                 </button>
 
                 @if (isMenuOpen()) {
-                  <div class="absolute right-0 mt-4 w-72 bg-white rounded-[40px] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.12)] border border-slate-100 overflow-hidden z-[60] animate-fade-up">
-                    <div class="p-8 bg-slate-50/50 border-b border-slate-100 text-center">
-                      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Mi Cuenta</p>
-                      <p class="text-sm font-black text-text-title truncate">{{ user()?.email }}</p>
+                  <div class="absolute right-0 mt-4 w-72 bg-slate-900 rounded-[32px] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-white/5 overflow-hidden z-[60] animate-fade-up backdrop-blur-xl">
+                    <div class="p-8 bg-white/5 border-b border-white/5 text-center">
+                      <p class="text-[10px] font-black text-cyan-500 uppercase tracking-widest mb-1">Sesión Iniciada</p>
+                      <p class="text-sm font-black text-white/90 truncate">{{ user()?.email }}</p>
                     </div>
                     <div class="p-4 space-y-1">
-                      <a (click)="closeMenu()" routerLink="/profile" class="dropdown-item">
+                      <a (click)="closeMenu()" routerLink="/profile" class="dropdown-item !text-white/60 hover:!bg-white/5 hover:!text-cyan-400">
                         <mat-icon>person_outline</mat-icon> Mi Perfil
                       </a>
                       @if (authService.isAdmin()) {
-                        <a (click)="closeMenu()" routerLink="/admin" class="dropdown-item">
+                        <a (click)="closeMenu()" routerLink="/admin" class="dropdown-item !text-white/60 hover:!bg-white/5 hover:!text-cyan-400">
                           <mat-icon>admin_panel_settings</mat-icon> Panel Admin
                         </a>
                       }
-                      <div class="h-px bg-slate-50 my-2 mx-4"></div>
-                      <button (click)="logout()" class="dropdown-item w-full text-rose-500 hover:bg-rose-50 hover:text-rose-600">
+                      <div class="h-px bg-white/5 my-2 mx-4"></div>
+                      <button (click)="logout()" class="dropdown-item w-full !text-rose-400 hover:!bg-rose-500/10 hover:!text-rose-300">
                         <mat-icon>logout</mat-icon> Cerrar sesión
                       </button>
                     </div>
@@ -282,6 +282,10 @@ import { MatIconModule } from '@angular/material/icon';
     }
     .nav-link-active { 
       color: #22d3ee !important; 
+      background: rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px border rgba(255, 255, 255, 0.05);
     }
     .nav-link-active::after {
       width: 24px;
